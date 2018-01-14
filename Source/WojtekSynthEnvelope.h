@@ -23,7 +23,8 @@ public:
     void wojtekSetSustain(float sus);
     void wojtekSetRelease(float releaseInMicroSec);
     
-    float wAmpLog(float amp0to1);
+    float wAmpLogDown(float amp0to1);
+    float wAmpLogUP(float amp0to1);
     float wAmpExp(float amp0to1);
     
 private:

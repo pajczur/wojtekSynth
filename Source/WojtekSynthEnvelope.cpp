@@ -29,7 +29,8 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
             
             if(fazaD != 0) fazaD = 0;
             if(fazaR != 0) fazaR = 0;
-            return wAmpLog(wAmplitude) * input;
+//            return wAmpLogDown(wAmplitude) * input;
+            return wAmpLogUP(wAmplitude) * input;
 //            return wAmpExp(wAmplitude) * input;
         } else {
         
@@ -44,7 +45,8 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
 
                 if(fazaA != 0) fazaA = 0;
                 if(fazaR != 0) fazaR = 0;
-                return wAmpLog(wAmplitude) * input;
+//                return wAmpLogDown(wAmplitude) * input;
+                return wAmpLogUP(wAmplitude) * input;
 //                return wAmpExp(wAmplitude) * input;
             } else {
                 if (wAmplitude != wSustain) { wAmplitude = wSustain; ampRelTemp = wSustain; }
@@ -71,7 +73,8 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
             wAmplitude = 0;
         }
         if (wAmplitude <= 0) wAmplitude = 0;
-        return wAmpLog(wAmplitude) * input;
+//        return wAmpLogDown(wAmplitude) * input;
+        return wAmpLogUP(wAmplitude) * input;
 //        return wAmpExp(wAmplitude) * input;
     }
 }
@@ -120,11 +123,21 @@ void WojtekEnvelope::wojtekSetRelease(float releaseInMicroSec)
 
 //==============================================================================
 
-float WojtekEnvelope::wAmpLog(float amp0to1)
+float WojtekEnvelope::wAmpLogDown(float amp0to1)
 {
     if (amp0to1>0 && amp0to1<1) {
         float toLog = (-65.7303) * (1 - amp0to1);
         return powf(10.0f, (toLog)/20.0f);
+    } else if (amp0to1>=1) {
+        return 1.0f;
+    } else return 0.0f;
+}
+
+float WojtekEnvelope::wAmpLogUP(float amp0to1)
+{
+    if (amp0to1>0 && amp0to1<1) {
+        if((log10f(amp0to1))+1 <= 0) return 0.0f;
+        else return (log10f(amp0to1))+1;
     } else if (amp0to1>=1) {
         return 1.0f;
     } else return 0.0f;
