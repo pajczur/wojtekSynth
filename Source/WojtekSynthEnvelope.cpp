@@ -20,7 +20,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
     
     if(trig == 1) {
         
-        // ===== ATTACK ==================================== DUPEX
+        // ===== ATTACK ==================================== DUPEX FALALALALA
         if ((fazaA/wAttack)<1.0f && wAttackTrig==0) {
             amplitudaA = fazaA/wAttack;
             fazaA++;
