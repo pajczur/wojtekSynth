@@ -24,9 +24,9 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
         if ((fazaA/wAttack)<1.0f && wAttackTrig==0) {
             amplitudaA = fazaA/wAttack;
             fazaA++;
-//            fazaR += (wRelease/wAttack); if (fazaR > wRelease) fazaR = wRelease;
-//            if (fazaD != 0) fazaD = 0; DUPA
-//            if (amplitudaD!=1) amplitudaD=1;
+            fazaR += (wRelease/wAttack); if (fazaR > wRelease) fazaR = wRelease;
+            if (fazaD != 0) fazaD = 0; DUPA
+            if (amplitudaD!=1) amplitudaD=1;
             
             
             return amplitudaA * input;
@@ -38,9 +38,9 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
             
             if (fazaD < wDecay ) {
                 amplitudaD -= ((1-wSustain)/wDecay);
-//                fazaD++;
-//                fazaR -= ((wRelease/wDecay) * (1 - wSustain));
-//                fazaA -= ((wAttack/wDecay) * (1 - wSustain));
+                fazaD++;
+                fazaR -= ((wRelease/wDecay) * (1 - wSustain));
+                fazaA -= ((wAttack/wDecay) * (1 - wSustain));
                 return amplitudaD * input;
             } else {
                 return wSustain * input;
