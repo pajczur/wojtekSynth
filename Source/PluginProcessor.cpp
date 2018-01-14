@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    This file was auto-generated!
+    This file was auto-generated! AAAAAAAAAA
 
     It contains the basic framework code for a JUCE plugin processor. UUUUUUUUU
 
