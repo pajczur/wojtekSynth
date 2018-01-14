@@ -9,6 +9,7 @@
 */
 #include <iostream>
 #include "WojtekSynthEnvelope.h"
+#include <cmath>
 
 //==============================================================================
 
@@ -21,47 +22,57 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
     if(trig == 1) {
         
         // ===== ATTACK ====================================
-        if ((fazaA/wAttack)<1.0f && wAttackTrig==0) {
-            amplitudaA = fazaA/wAttack;
+        if (fazaA<wAttack && wAmplitude<=1 && wAttackTrig==1) {
+            wAmplitude += 1/wAttack;
+            ampRelTemp = wAmplitude;
             fazaA++;
-            fazaR += (wRelease/wAttack); if (fazaR > wRelease) fazaR = wRelease;
-            if (fazaD != 0) fazaD = 0;
-            if (amplitudaD!=1) amplitudaD=1;
             
-            
-            return amplitudaA * input;
+            if(fazaD != 0) fazaD = 0;
+            if(fazaR != 0) fazaR = 0;
+            return wAmpLog(wAmplitude) * input;
+//            return wAmpExp(wAmplitude) * input;
         } else {
         
         // ===== DECAY & SUSTAIN ===========================
             
-            if (wAttackTrig == 0) wAttackTrig = 1;
+            if (wAttackTrig == 1) wAttackTrig = 0;
             
             if (fazaD < wDecay ) {
-                amplitudaD -= ((1-wSustain)/wDecay);
+                wAmplitude -= ((1-wSustain)/wDecay);
+                ampRelTemp = wAmplitude;
                 fazaD++;
-                fazaR -= ((wRelease/wDecay) * (1 - wSustain));
-                fazaA -= ((wAttack/wDecay) * (1 - wSustain));
-                return amplitudaD * input;
+
+                if(fazaA != 0) fazaA = 0;
+                if(fazaR != 0) fazaR = 0;
+                return wAmpLog(wAmplitude) * input;
+//                return wAmpExp(wAmplitude) * input;
             } else {
+                if (wAmplitude != wSustain) { wAmplitude = wSustain; ampRelTemp = wSustain; }
+                
+                if(fazaA != 0) fazaA = 0;
+                if(fazaR != 0) fazaR = 0;
                 return wSustain * input;
+//                return wAmpLog(wAmplitude) * input;
+//                return wAmpExp(wAmplitude) * input;
             }
         }
     } else {
         
         // ===== RELEASE ====================================
         
-        if (wAttackTrig == 1) wAttackTrig=0;
-        if (fazaR > 0) {
-            amplitudaR = fazaR/wRelease;
+        if (wAttackTrig == 0) wAttackTrig=1;
+        if (fazaR<wRelease && wAmplitude>0) {
+            wAmplitude -= ampRelTemp/wRelease;
             
-            fazaR--;
-            fazaA -= (wAttack/wRelease);
+            if(fazaA != 0) fazaA = 0;
+            fazaR++;
         } else {
-            fazaA=0;
-            amplitudaR = 0;
+            if(fazaA != 0) fazaA = 0;
+            wAmplitude = 0;
         }
-        
-        return amplitudaR * input;
+        if (wAmplitude <= 0) wAmplitude = 0;
+        return wAmpLog(wAmplitude) * input;
+//        return wAmpExp(wAmplitude) * input;
     }
 }
 
@@ -90,7 +101,12 @@ void WojtekEnvelope::wojtekSetDecay(float decayInMicroSec)
 
 void WojtekEnvelope::wojtekSetSustain(float sus)
 {
-    wSustain = sus;
+    if (sus>0 && sus<1) {
+        float toLog = -65.7303 * (1 - sus);
+        wSustain = powf(10.0f, toLog/20.0f);
+    } else if (sus>=1) {
+        wSustain = 1;
+    } else wSustain = 0;
 }
 
 
@@ -99,4 +115,27 @@ void WojtekEnvelope::wojtekSetSustain(float sus)
 void WojtekEnvelope::wojtekSetRelease(float releaseInMicroSec)
 {
     wRelease = releaseInMicroSec * ((float)wSampleRate/1000000.0f);
+}
+
+
+//==============================================================================
+
+float WojtekEnvelope::wAmpLog(float amp0to1)
+{
+    if (amp0to1>0 && amp0to1<1) {
+        float toLog = (-65.7303) * (1 - amp0to1);
+        return powf(10.0f, (toLog)/20.0f);
+    } else if (amp0to1>=1) {
+        return 1.0f;
+    } else return 0.0f;
+}
+
+float WojtekEnvelope::wAmpExp(float amp0to1)
+{
+    if (amp0to1>0 && amp0to1<1) {
+
+        return (float)exp((-0.43415218*10)/(0.1*amp0to1*wSampleRate*0.001));
+    } else if (amp0to1>=1) {
+        return (float)exp((-0.43415218*10)/(0.1*wSampleRate*0.001));
+    } else return 0.0f;
 }

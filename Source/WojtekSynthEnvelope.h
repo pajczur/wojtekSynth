@@ -23,27 +23,31 @@ public:
     void wojtekSetSustain(float sus);
     void wojtekSetRelease(float releaseInMicroSec);
     
+    float wAmpLog(float amp0to1);
+    float wAmpExp(float amp0to1);
+    
 private:
     int trigger = 0;
     int wSampleRate = 44100;
     int wBufferSize=512;
     
     float wInput;
-    float amplitudaA;
+    float wAmplitude;
     float amplitudaR;
     float amplitudaD;
+    float ConstAmplitudaA;
+    float ConstAmplitudaR;
+    float ConstAmplitudaD;
     
     float wAttack=1.0f;
-    float wAttackConst;
     float fazaA=0.0f;
-    int wAttackTrig=0;
+    int wAttackTrig=1;
     
     float wDecay=1.0f;
-    float wDecayConst;
     float wSustain=1.0f;
     float fazaD=0.0f;
     
     float wRelease=1.0f;
-    float wReleaseConst;
     float fazaR = 0.0f;
+    float ampRelTemp;
 };
