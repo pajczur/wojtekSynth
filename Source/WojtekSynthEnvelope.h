@@ -3,7 +3,7 @@
 
     WojtekSynthEnvelope.h
     Created: 7 Jan 2018 5:34:29pm
-    Author:  Wojtek Pilwinski
+    Author:  Wojtek Pilwinski A CO TO?
 
   ==============================================================================
 */
