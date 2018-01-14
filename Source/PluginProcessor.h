@@ -3,7 +3,7 @@
 
     This file was auto-generated!
 
-    It contains the basic framework code for a JUCE plugin processor. UUUUUUU
+    It contains the basic framework code for a JUCE plugin processor.
 
   ==============================================================================
 */
