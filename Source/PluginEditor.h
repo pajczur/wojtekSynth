@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "WojtekSynthOscillators.h"
 
 
 //==============================================================================
@@ -20,7 +21,7 @@
 class WojtekSynthAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
-    WojtekSynthAudioProcessorEditor (WojtekSynthAudioProcessor&);
+    WojtekSynthAudioProcessorEditor (WojtekSynthAudioProcessor& p);
     ~WojtekSynthAudioProcessorEditor();
 
     //==============================================================================
@@ -42,10 +43,14 @@ private:
     Label sustainL;
     Label releaseL;
     
+    WojtekSynthOscillators oscGUI;
+    
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> attackAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> decayAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> sustainAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> releaseAttache;
+    
+    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscGUIAttache;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthAudioProcessorEditor)
 };

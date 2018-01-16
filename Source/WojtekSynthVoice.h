@@ -48,6 +48,25 @@ public:
         env2.wojtekSetRelease(*release);
     }
     
+    void setWaveType (float* waveType)
+    {
+        theWaveType = *waveType;
+    }
+    
+    double oscWaveType()
+    {
+        if (theWaveType == 0) return osc1.sinewave(frequency);
+        if (theWaveType == 1) return osc1.saw(frequency);
+        if (theWaveType == 2) return osc1.sawn(frequency);
+        if (theWaveType == 3) return osc1.square(frequency);
+        if (theWaveType == 4) return osc1.triangle(frequency);
+        if (theWaveType == 5) return osc1.phasor(frequency);
+        if (theWaveType == 6) return osc1.noise();
+        
+        else return 0.0f;
+        
+    }
+    
     //==============================================================================
 
     void startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition) override
@@ -87,7 +106,7 @@ public:
 
         for (int sample=0; sample < numSamples; ++sample)
         {
-            double theSinus = osc1.sinewave(frequency);
+//            double theSinus = osc1.sinewave(frequency);
 //            double theSquere = osc2.square(frequency);
 
 //            double theSinSound = env1.adsr(theSinus, env1.trigger) * level;
@@ -97,7 +116,7 @@ public:
 //            outputBuffer.addSample(0, startSample, theSquSound);
    
 //            if (dupa == 0) { dupa = 1; std::cout << " SZAMBO " << std::endl; }
-            float wojtekSound = env2.wojtekADSR((float)theSinus, env2.getTrigger());
+            float wojtekSound = env2.wojtekADSR((float)oscWaveType(), env2.getTrigger());
             outputBuffer.addSample(0, startSample, wojtekSound);
             
 
@@ -124,11 +143,12 @@ public:
     
     maxiEnv env1;
     WojtekEnvelope env2;
+//    WojtekSynthOscillators 
 private:
     double level;
     double frequency;
-    int test=0;
-    int test2=0;
+    int theWaveType;
+
     maxiOsc osc1;
     maxiOsc osc2;
     int dupa = 0;

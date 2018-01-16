@@ -24,8 +24,11 @@ public:
     void wojtekSetRelease(float releaseInMicroSec);
     
     float wAmpLogDown(float amp0to1);
+    float wAmpLogDownDecay(float amp0to1, float sustain);
     float wAmpLogUP(float amp0to1);
     float wAmpExp(float amp0to1);
+    
+    float wLogShape(float amp0to1);
     
 private:
     int trigger = 0;
@@ -34,7 +37,7 @@ private:
     
     float wInput;
     float wAmplitude;
-    float amplitudaR;
+    float wAmplitudeR;
     float amplitudaD;
     float ConstAmplitudaA;
     float ConstAmplitudaR;
@@ -51,4 +54,5 @@ private:
     float wRelease=1.0f;
     float fazaR = 0.0f;
     float ampRelTemp;
+    float logAmpRelTemp;
 };

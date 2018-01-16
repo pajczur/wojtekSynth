@@ -52,6 +52,10 @@
             file="Source/WojtekSynthEnvelope.cpp"/>
       <FILE id="UhxJG5" name="WojtekSynthEnvelope.h" compile="0" resource="0"
             file="Source/WojtekSynthEnvelope.h"/>
+      <FILE id="XZGUOT" name="WojtekSynthOscillators.cpp" compile="1" resource="0"
+            file="Source/WojtekSynthOscillators.cpp"/>
+      <FILE id="zx4BlE" name="WojtekSynthOscillators.h" compile="0" resource="0"
+            file="Source/WojtekSynthOscillators.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

@@ -14,11 +14,11 @@
 
 //==============================================================================
 WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), processor (p), oscGUI(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 500);
+    setSize (400, 800);
     
     attackL.setText("wAttack", dontSendNotification);
     attackL.setJustificationType(Justification::centredBottom);
@@ -29,7 +29,8 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     attackSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     attackSlider.setTextValueSuffix(" ms");
     addAndMakeVisible(&attackSlider);
-    attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.attackTree, "attack", attackSlider);
+//    attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.attackTree, "attack", attackSlider);
+    attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "attack", attackSlider);
     
     decayL.setText("wDecay", dontSendNotification);
     decayL.setJustificationType(Justification::centredBottom);
@@ -40,7 +41,8 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     decaySlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     decaySlider.setTextValueSuffix(" ms");
     addAndMakeVisible(&decaySlider);
-    decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.decayTree, "decay", decaySlider);
+//    decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.decayTree, "decay", decaySlider);
+    decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "decay", decaySlider);
     
     sustainL.setText("wSustain", dontSendNotification);
     sustainL.setJustificationType(Justification::centredBottom);
@@ -51,7 +53,8 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     sustainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     sustainSlider.setTextValueSuffix(" dB");
     addAndMakeVisible(&sustainSlider);
-    sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.sustainTree, "sustain", sustainSlider);
+//    sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.sustainTree, "sustain", sustainSlider);
+    sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sustain", sustainSlider);
     
     releaseL.setText("wRelease", dontSendNotification);
     releaseL.setJustificationType(Justification::centredBottom);
@@ -62,7 +65,10 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     releaseSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     releaseSlider.setTextValueSuffix(" ms");
     addAndMakeVisible(&releaseSlider);
-    releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.releaseTree, "release", releaseSlider);
+//    releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.releaseTree, "release", releaseSlider);
+    releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "release", releaseSlider);
+    
+    addAndMakeVisible(&oscGUI);
 }
 
 WojtekSynthAudioProcessorEditor::~WojtekSynthAudioProcessorEditor()
@@ -74,8 +80,6 @@ void WojtekSynthAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-
-
 }
 
 void WojtekSynthAudioProcessorEditor::resized()
@@ -84,4 +88,6 @@ void WojtekSynthAudioProcessorEditor::resized()
     decaySlider.setBounds(50, 150, 300, 50);
     sustainSlider.setBounds(50, 275, 300, 50);
     releaseSlider.setBounds(50, 400, 300, 50);
+    
+    oscGUI.setBounds(100, 525, 200, 50);
 }

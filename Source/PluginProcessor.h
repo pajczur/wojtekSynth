@@ -58,10 +58,8 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    AudioProcessorValueTreeState attackTree;
-    AudioProcessorValueTreeState decayTree;
-    AudioProcessorValueTreeState sustainTree;
-    AudioProcessorValueTreeState releaseTree;
+    
+    AudioProcessorValueTreeState tree;
 
 private:
     Synthesiser mojSynt;

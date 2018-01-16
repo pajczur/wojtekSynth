@@ -23,23 +23,27 @@ WojtekSynthAudioProcessor::WojtekSynthAudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                   ),
-attackTree(*this, nullptr),
-decayTree(*this, nullptr),
-sustainTree(*this, nullptr),
-releaseTree(*this, nullptr)
+tree(*this, nullptr)
+//attackTree(*this, nullptr),
+//decayTree(*this, nullptr),
+//sustainTree(*this, nullptr),
+//releaseTree(*this, nullptr)
 #endif
 {
     NormalisableRange<float> attackRange (500.0f, 2000000.0f);
-    attackTree.createAndAddParameter("attack", "Attack", "Speed", attackRange, 1000000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("attack", "Attack", "Speed", attackRange, 1000000.0f, nullptr, nullptr);
     
     NormalisableRange<float> decayRange (500.0f, 10000000.0f);
-    decayTree.createAndAddParameter("decay", "Decay", "Speed", decayRange, 120000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("decay", "Decay", "Speed", decayRange, 120000.0f, nullptr, nullptr);
 
     NormalisableRange<float> sustainRange (0.00f, 1.0f);
-    sustainTree.createAndAddParameter("sustain", "Sustain", "Amplitude", sustainRange, 1.0f, nullptr, nullptr);
+    tree.createAndAddParameter("sustain", "Sustain", "Amplitude", sustainRange, 1.0f, nullptr, nullptr);
 
     NormalisableRange<float> releaseRange (500.0f, 2000000.0f);
-    releaseTree.createAndAddParameter("release", "Release", "Speed", releaseRange, 1000000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("release", "Release", "Speed", releaseRange, 1000000.0f, nullptr, nullptr);
+    
+    NormalisableRange<float> oscChoices(0, 6);
+    tree.createAndAddParameter("wavetype", "WaveType", "WaveTypes", oscChoices, 0, nullptr, nullptr);
     
     
     mojSynt.clearVoices();
@@ -167,11 +171,17 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     {
         if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
         {
-            mojVoice->setWAttack(attackTree.getRawParameterValue("attack"));
-            mojVoice->setWDecay(decayTree.getRawParameterValue("decay"));
-            mojVoice->setWSustain(sustainTree.getRawParameterValue("sustain"));
-            mojVoice->setWRelease(releaseTree.getRawParameterValue("release"));
+//            mojVoice->setWAttack(attackTree.getRawParameterValue("attack"));
+//            mojVoice->setWDecay(decayTree.getRawParameterValue("decay"));
+//            mojVoice->setWSustain(sustainTree.getRawParameterValue("sustain"));
+//            mojVoice->setWRelease(releaseTree.getRawParameterValue("release"));
             
+            mojVoice->setWAttack(tree.getRawParameterValue("attack"));
+            mojVoice->setWDecay(tree.getRawParameterValue("decay"));
+            mojVoice->setWSustain(tree.getRawParameterValue("sustain"));
+            mojVoice->setWRelease(tree.getRawParameterValue("release"));
+            
+            mojVoice->setWaveType(tree.getRawParameterValue("wavetype"));
         }
     }
 
