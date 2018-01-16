@@ -85,6 +85,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
         } else {
             if(fazaA != 0) fazaA = 0;
             wAmplitude = 0;
+            wAmplitudeR = 0;
         }
         if (wAmplitude <= 0) wAmplitude = 0;
         
