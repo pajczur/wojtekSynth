@@ -18,16 +18,52 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 800);
+    setSize (775, 430);
+    
+    attackSL.setText("A. shape", dontSendNotification);
+    attackSL.setJustificationType(Justification::centredBottom);
+    addAndMakeVisible(&attackSL);
+    attackSL.attachToComponent(&attackShape, false);
+    attackShape.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    attackShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    attackShape.setRange(0.000000001, 0.999999999);
+    attackShape.addListener(this);
+    attackShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "attackshape", attackShape);
+    addAndMakeVisible(&attackShape);
+    
+    decaySL.setText("D. shape", dontSendNotification);
+    decaySL.setJustificationType(Justification::centredBottom);
+    addAndMakeVisible(&decaySL);
+    decaySL.attachToComponent(&decayShape, false);
+    decayShape.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    decayShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    decayShape.setRange(0.000000001, 0.999999999);
+    decayShape.addListener(this);
+    decayShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "decayshape", decayShape);
+    addAndMakeVisible(&decayShape);
+    
+    releaseSL.setText("R. shape", dontSendNotification);
+    releaseSL.setJustificationType(Justification::centredBottom);
+    addAndMakeVisible(&releaseSL);
+    releaseSL.attachToComponent(&releaseShape, false);
+    releaseShape.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    releaseShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    releaseShape.setRange(0.000000001, 0.999999999);
+    releaseShape.addListener(this);
+    releaseShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "releaseshape", releaseShape);
+    addAndMakeVisible(&releaseShape);
+    
+    
     
     attackL.setText("wAttack", dontSendNotification);
     attackL.setJustificationType(Justification::centredBottom);
     addAndMakeVisible(&attackL);
     attackL.attachToComponent(&attackSlider, false);
     attackSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    attackSlider.setRange(500.0f, 2000000.0f);
+    attackSlider.setRange(2500.0f, 2000000.0f);
     attackSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     attackSlider.setTextValueSuffix(" ms");
+    attackSlider.addListener(this);
     addAndMakeVisible(&attackSlider);
 //    attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.attackTree, "attack", attackSlider);
     attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "attack", attackSlider);
@@ -37,9 +73,10 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     addAndMakeVisible(&decayL);
     decayL.attachToComponent(&decaySlider, false);
     decaySlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    decaySlider.setRange(500.0f, 10000000.0f);
+    decaySlider.setRange(2500.0f, 2000000.0f);
     decaySlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     decaySlider.setTextValueSuffix(" ms");
+    decaySlider.addListener(this);
     addAndMakeVisible(&decaySlider);
 //    decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.decayTree, "decay", decaySlider);
     decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "decay", decaySlider);
@@ -52,6 +89,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     sustainSlider.setRange(0.0f, 1.0f);
     sustainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     sustainSlider.setTextValueSuffix(" dB");
+    sustainSlider.addListener(this);
     addAndMakeVisible(&sustainSlider);
 //    sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.sustainTree, "sustain", sustainSlider);
     sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sustain", sustainSlider);
@@ -61,14 +99,16 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     addAndMakeVisible(&releaseL);
     releaseL.attachToComponent(&releaseSlider, false);
     releaseSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    releaseSlider.setRange(500.0f, 2000000.0f);
+    releaseSlider.setRange(2500.0f, 2000000.0f);
     releaseSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
     releaseSlider.setTextValueSuffix(" ms");
+    releaseSlider.addListener(this);
     addAndMakeVisible(&releaseSlider);
 //    releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.releaseTree, "release", releaseSlider);
     releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "release", releaseSlider);
     
     addAndMakeVisible(&oscGUI);
+    addAndMakeVisible(&envGraphWindow);
 }
 
 WojtekSynthAudioProcessorEditor::~WojtekSynthAudioProcessorEditor()
@@ -85,9 +125,106 @@ void WojtekSynthAudioProcessorEditor::paint (Graphics& g)
 void WojtekSynthAudioProcessorEditor::resized()
 {
     attackSlider.setBounds(50, 25, 300, 50);
-    decaySlider.setBounds(50, 150, 300, 50);
-    sustainSlider.setBounds(50, 275, 300, 50);
-    releaseSlider.setBounds(50, 400, 300, 50);
+    decaySlider.setBounds(50, 125, 300, 50);
+    sustainSlider.setBounds(50, 225, 300, 50);
+    releaseSlider.setBounds(50, 325, 300, 50);
     
-    oscGUI.setBounds(100, 525, 200, 50);
+    attackShape.setBounds(420, 250, 85, 85);
+    decayShape.setBounds(530, 250, 85, 85);
+    releaseShape.setBounds(640, 250, 85, 85);
+    
+    oscGUI.setBounds(400+((350-200)/2), 360, 200, 50);
+    envGraphWindow.setBounds(400, 25, envGraphWindow.getWidth(), envGraphWindow.getHeight());
+}
+
+void WojtekSynthAudioProcessorEditor::sliderValueChanged (Slider *slider)
+{
+    if(slider == &attackShape || slider == &attackSlider) {
+        drawAttack();
+        drawDecay();
+        drawRelease();
+        envGraphWindow.repaint();
+    }
+
+    if(slider == &decayShape || slider == &decaySlider || slider == &sustainSlider) {
+        drawDecay();
+        drawRelease();
+        envGraphWindow.repaint();
+    }
+    
+    if(slider == &releaseShape || slider == &releaseSlider) {
+        drawRelease();
+        envGraphWindow.repaint();
+    }
+}
+
+void WojtekSynthAudioProcessorEditor::drawAttack()
+{
+    float attackPos = attackSlider.getValue()/attackSlider.getMaximum();
+    
+    envGraphWindow.attackPath.clear();
+    envGraphWindow.jointPathA.clear();
+    envGraphWindow.attackPath.startNewSubPath(envGraphWindow.startPointX, envGraphWindow.startPointY);
+    envGraphWindow.adsrGraph.wLogAttackManip(attackShape.getValue());
+    
+    for (int i=0; i<=100; i++) {
+        envGraphWindow.attackPath.lineTo(envGraphWindow.startPointX+((330.0f/3.0f)*attackPos*i/100),
+                                         envGraphWindow.startPointY - (180*envGraphWindow.adsrGraph.wLogAttack((float)i/100.0f)));
+        
+        if(i == 100) {
+            envGraphWindow.jointPathA.addEllipse(envGraphWindow.startPointX+((330.0f/3.0f)*attackPos*i/100)-3, envGraphWindow.startPointY - (180*envGraphWindow.adsrGraph.wLogAttack((float)i/100.0f))-3, 6, 6);
+        }
+    }
+}
+
+void WojtekSynthAudioProcessorEditor::drawDecay()
+{
+    float decayPos = decaySlider.getValue()/decaySlider.getMaximum();
+    float sustainPos = (1-sustainSlider.getValue());
+    float decInitAmp = 1;
+    
+    envGraphWindow.decayPath.clear();
+    envGraphWindow.jointPathD.clear();
+    envGraphWindow.decayPath.startNewSubPath(envGraphWindow.jointPathA.getCurrentPosition());
+    envGraphWindow.adsrGraph.wLogDecayManip(decayShape.getValue());
+    
+    for (int i=0; i<=100; i++) {
+        envGraphWindow.decayPath.lineTo(envGraphWindow.jointPathA.getCurrentPosition().getX()+((330.0f/3.0f)*decayPos*i/100),
+                                        envGraphWindow.jointPathA.getCurrentPosition().getY() + (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogDecay(decInitAmp)))+3);
+        
+        
+        if(i == 100) {
+            envGraphWindow.jointPathD.addEllipse(envGraphWindow.jointPathA.getCurrentPosition().getX()+((330.0f/3.0f)*decayPos*i/100)-3, envGraphWindow.jointPathA.getCurrentPosition().getY() + (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogDecay(decInitAmp)))-1, 8, 8);
+        }
+        decInitAmp -= 1.0f/100.0f;
+    }
+    
+}
+
+
+void WojtekSynthAudioProcessorEditor::drawRelease()
+{
+    float releasePos = releaseSlider.getValue()/releaseSlider.getMaximum();
+    float sustainPos = sustainSlider.getValue();
+    float relInitAmp = 1;
+
+    Point<float> wXYr = envGraphWindow.jointPathD.getCurrentPosition();
+    
+    envGraphWindow.releasePath.clear();
+    envGraphWindow.jointPathR.clear();
+    envGraphWindow.releasePath.startNewSubPath(envGraphWindow.jointPathD.getCurrentPosition().getX(),
+                                               envGraphWindow.jointPathD.getCurrentPosition().getY()+4);
+    envGraphWindow.adsrGraph.wLogReleaseManip(releaseShape.getValue());
+    
+    for (int i=0; i<=100; i++) {
+        envGraphWindow.releasePath.lineTo(wXYr.getX()+((330.0f/3.0f)*releasePos*i/100), wXYr.getY()+
+                (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogRelease(relInitAmp)))
+                                          +4);
+        
+        if(i == 100) {
+            envGraphWindow.jointPathR.addEllipse(wXYr.getX()+((330.0f/3.0f)*releasePos*i/100)-3, wXYr.getY() + (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogRelease(relInitAmp)))+1, 6, 6);
+        }
+        relInitAmp -= 1.0f/100.0f;
+    }
+    
 }

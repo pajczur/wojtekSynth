@@ -56,6 +56,10 @@
             file="Source/WojtekSynthOscillators.cpp"/>
       <FILE id="zx4BlE" name="WojtekSynthOscillators.h" compile="0" resource="0"
             file="Source/WojtekSynthOscillators.h"/>
+      <FILE id="zKMbQi" name="WojtekSynthEnvelopeGraph.cpp" compile="1" resource="0"
+            file="Source/WojtekSynthEnvelopeGraph.cpp"/>
+      <FILE id="rXRrD9" name="WojtekSynthEnvelopeGraph.h" compile="0" resource="0"
+            file="Source/WojtekSynthEnvelopeGraph.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

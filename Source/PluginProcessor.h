@@ -61,9 +61,9 @@ public:
     
     AudioProcessorValueTreeState tree;
 
+    WojtekSynthVoice* mojVoice;
 private:
     Synthesiser mojSynt;
-    WojtekSynthVoice* mojVoice;
     
     int test=0;
     int test2=0;

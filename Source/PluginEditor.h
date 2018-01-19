@@ -13,12 +13,14 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "WojtekSynthOscillators.h"
+#include "WojtekSynthEnvelopeGraph.h"
 
 
 //==============================================================================
 /**
 */
-class WojtekSynthAudioProcessorEditor  : public AudioProcessorEditor
+class WojtekSynthAudioProcessorEditor  : public AudioProcessorEditor,
+                                         public Slider::Listener
 {
 public:
     WojtekSynthAudioProcessorEditor (WojtekSynthAudioProcessor& p);
@@ -28,6 +30,11 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     
+    void sliderValueChanged (Slider *slider) override;
+    
+    void drawAttack();
+    void drawDecay();
+    void drawRelease();
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -38,17 +45,29 @@ private:
     Slider sustainSlider;
     Slider releaseSlider;
     
+    Slider attackShape;
+    Slider decayShape;
+    Slider releaseShape;
+    
     Label attackL;
+    Label attackSL;
     Label decayL;
+    Label decaySL;
     Label sustainL;
     Label releaseL;
+    Label releaseSL;
     
     WojtekSynthOscillators oscGUI;
+    
+    WojtekSynthEnvelopeGraph envGraphWindow;
     
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> attackAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> decayAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> sustainAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> releaseAttache;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> attackShapeAttache;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> decayShapeAttache;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> releaseShapeAttache;
     
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscGUIAttache;
     

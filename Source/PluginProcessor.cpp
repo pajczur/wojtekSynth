@@ -30,21 +30,29 @@ tree(*this, nullptr)
 //releaseTree(*this, nullptr)
 #endif
 {
-    NormalisableRange<float> attackRange (500.0f, 2000000.0f);
-    tree.createAndAddParameter("attack", "Attack", "Speed", attackRange, 1000000.0f, nullptr, nullptr);
+    NormalisableRange<float> attackRange (2500.0f, 2000000.0f);
+    tree.createAndAddParameter("attack", "Attack", "Speed", attackRange, 100000.0f, nullptr, nullptr);
     
-    NormalisableRange<float> decayRange (500.0f, 10000000.0f);
-    tree.createAndAddParameter("decay", "Decay", "Speed", decayRange, 120000.0f, nullptr, nullptr);
+    NormalisableRange<float> decayRange (2500.0f, 2000000.0f);
+    tree.createAndAddParameter("decay", "Decay", "Speed", decayRange, 1000000.0f, nullptr, nullptr);
 
     NormalisableRange<float> sustainRange (0.00f, 1.0f);
     tree.createAndAddParameter("sustain", "Sustain", "Amplitude", sustainRange, 1.0f, nullptr, nullptr);
 
-    NormalisableRange<float> releaseRange (500.0f, 2000000.0f);
-    tree.createAndAddParameter("release", "Release", "Speed", releaseRange, 1000000.0f, nullptr, nullptr);
+    NormalisableRange<float> releaseRange (2500.0f, 2000000.0f);
+    tree.createAndAddParameter("release", "Release", "Speed", releaseRange, 200000.0f, nullptr, nullptr);
     
     NormalisableRange<float> oscChoices(0, 6);
     tree.createAndAddParameter("wavetype", "WaveType", "WaveTypes", oscChoices, 0, nullptr, nullptr);
     
+    NormalisableRange<float> attShapeRange(0.000000001, 0.999999999);
+    tree.createAndAddParameter("attackshape", "AttackShape", "A_shape", attShapeRange, 0.55f, nullptr, nullptr);
+    
+    NormalisableRange<float> decShapeRange(0.000000001, 0.999999999);
+    tree.createAndAddParameter("decayshape", "DecayShape", "D_shape", decShapeRange, 0.55f, nullptr, nullptr);
+    
+    NormalisableRange<float> relShapeRange(0.000000001, 0.999999999);
+    tree.createAndAddParameter("releaseshape", "ReleaseShape", "R_shape", relShapeRange, 0.55f, nullptr, nullptr);
     
     mojSynt.clearVoices();
     
@@ -166,22 +174,20 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     buffer.clear();
     
     mojSynt.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-
+    
     for (int i = 0; i < mojSynt.getNumVoices(); i++)
     {
         if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
-        {
-//            mojVoice->setWAttack(attackTree.getRawParameterValue("attack"));
-//            mojVoice->setWDecay(decayTree.getRawParameterValue("decay"));
-//            mojVoice->setWSustain(sustainTree.getRawParameterValue("sustain"));
-//            mojVoice->setWRelease(releaseTree.getRawParameterValue("release"));
-            
+        {            
             mojVoice->setWAttack(tree.getRawParameterValue("attack"));
             mojVoice->setWDecay(tree.getRawParameterValue("decay"));
             mojVoice->setWSustain(tree.getRawParameterValue("sustain"));
             mojVoice->setWRelease(tree.getRawParameterValue("release"));
             
             mojVoice->setWaveType(tree.getRawParameterValue("wavetype"));
+            mojVoice->setWAttackShape(tree.getRawParameterValue("attackshape"));
+            mojVoice->setWDecayShape(tree.getRawParameterValue("decayshape"));
+            mojVoice->setWReleaseShape(tree.getRawParameterValue("releaseshape"));
         }
     }
 

@@ -23,12 +23,18 @@ public:
     void wojtekSetSustain(float sus);
     void wojtekSetRelease(float releaseInMicroSec);
     
-    float wAmpLogDown(float amp0to1);
     float wAmpLogDownDecay(float amp0to1, float sustain);
-    float wAmpLogUP(float amp0to1);
     float wAmpExp(float amp0to1);
     
-    float wLogShape(float amp0to1);
+    float wLogAttack(float amp0to1);
+    void wLogAttackManip (float curve);
+    
+    float wLogDecay(float amp0to1);
+    void wLogDecayManip (float curve);
+    
+    float wLogRelease(float amp0to1);
+    void wLogReleaseManip (float curve);
+    
     
 private:
     int trigger = 0;
@@ -46,13 +52,16 @@ private:
     float wAttack=1.0f;
     float fazaA=0.0f;
     int wAttackTrig=1;
+    float wAttackCurveParam=0.55f;
     
     float wDecay=1.0f;
     float wSustain=1.0f;
     float fazaD=0.0f;
+    float wDecayCurveParam=1.0f;
     
     float wRelease=1.0f;
     float fazaR = 0.0f;
     float ampRelTemp;
+    float wReleaseCurveParam=1.0f;
     float logAmpRelTemp;
 };

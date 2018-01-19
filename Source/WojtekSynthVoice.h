@@ -30,6 +30,14 @@ public:
         env2.wojtekSetAttack(*atak);
     }
     
+    void setWAttackShape(float* curveParam)
+    {
+        env2.wLogAttackManip(*curveParam);
+    }
+    
+    //==============================================================================
+    
+    
     void setWDecay (float* decay)
     {
         env1.setDecay((double)*decay);
@@ -41,12 +49,26 @@ public:
         env1.setSustain((double)*sustain);
         env2.wojtekSetSustain(*sustain);
     }
+    
+    void setWDecayShape(float* curveParam)
+    {
+        env2.wLogDecayManip(*curveParam);
+    }
+    
+    //==============================================================================
 
     void setWRelease (float* release)
     {
         env1.setRelease((double)*release);
         env2.wojtekSetRelease(*release);
     }
+    
+    void setWReleaseShape(float* curveParam)
+    {
+        env2.wLogReleaseManip(*curveParam);
+    }
+    
+    //==============================================================================
     
     void setWaveType (float* waveType)
     {

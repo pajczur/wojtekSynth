@@ -31,12 +31,9 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
             if(fazaR != 0) fazaR = 0;
             
             if (wAmplitudeR != 1) wAmplitudeR = 1;
-            logAmpRelTemp = wLogShape(wAmplitude);
+            logAmpRelTemp = wLogAttack(wAmplitude);
             
-//            return wAmpLogDown(wAmplitude) * input;
-            return wLogShape(wAmplitude) * input;
-//            return wAmpLogUP(wAmplitude) * input;
-//            return wAmpExp(wAmplitude) * input;
+            return wLogAttack(wAmplitude) * input;
         } else {
         
         // ===== DECAY & SUSTAIN ===========================
@@ -52,23 +49,19 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
                 if(fazaR != 0) fazaR = 0;
                 
                 if (wAmplitudeR != 1) wAmplitudeR = 1;
-                logAmpRelTemp = wAmpLogUP(wAmplitude);
+                logAmpRelTemp = wLogDecay(wAmplitude);
 
-//                return wAmpLogDown(wAmplitude) * input;
-                return wAmpLogUP(wAmplitude) * input;
-//                return wAmpLogDownDecay(wAmplitude, wSustain);
-//                return wAmpExp(wAmplitude) * input;
+
+                return wLogDecay(wAmplitude) * input;
             } else {
                 if (wAmplitude != wSustain) { wAmplitude = wSustain; ampRelTemp = wSustain; }
-                if (logAmpRelTemp != wAmpLogUP(wSustain)) logAmpRelTemp = wAmpLogUP(wSustain);
+                if (logAmpRelTemp != wLogDecay(wSustain)) logAmpRelTemp = wLogDecay(wSustain);
                 if (wAmplitudeR != 1) wAmplitudeR = 1;
                 
                 if(fazaA != 0) fazaA = 0;
                 if(fazaR != 0) fazaR = 0;
 
-//                return wAmpLog(wAmplitude) * input;
-                return wAmpLogUP(wSustain) * input;
-//                return wAmpExp(wAmplitude) * input;
+                return wLogDecay(wSustain) * input;
             }
         }
     } else {
@@ -90,7 +83,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
         if (wAmplitude <= 0) wAmplitude = 0;
         
         
-        return wAmpLogDown(wAmplitudeR) * logAmpRelTemp * input;
+        return wLogRelease(wAmplitudeR) * logAmpRelTemp * input;
 //        return wAmpLogUP(wAmplitude) * input;
 //        return wAmpExp(wAmplitude) * input;
     }
@@ -147,37 +140,98 @@ void WojtekEnvelope::wojtekSetRelease(float releaseInMicroSec)
 
 //==============================================================================
 
-float WojtekEnvelope::wLogShape(float amp0to1)
+float WojtekEnvelope::wLogAttack(float amp0to1)
 {
-    float amp;
-    if(amp0to1>0 && amp0to1<1)
-        amp = (exp( (log(0.55)) / amp0to1)) / 0.55;
-    else if (amp0to1 >= 1) return 1.0f;
-    else return 0.0f;
+//    if(amp0to1>0 && amp0to1<1) {
+//        return amp0to1;
+//    } else if (amp0to1 >= 1) {
+//        return 1.0f;
+//    } else return 0.0f;
     
-    return amp;
-}
-
-
-float WojtekEnvelope::wAmpLogDown(float amp0to1)
-{
-    if (amp0to1>0 && amp0to1<1) {
-        float toLog = (-65.7303) * (1 - amp0to1);
-        return powf(10.0f, (toLog)/20.0f);
-    } else if (amp0to1>=1) {
+    
+// LOGARYTHMIC
+    float amp;
+    if(amp0to1>0 && amp0to1<1) {
+        amp = ((-exp( (log(wAttackCurveParam)) / (1-amp0to1))) / wAttackCurveParam) + 1;
+        return amp;
+    } else if (amp0to1 >= 1) {
         return 1.0f;
-    } else return 0.0f;
+    }
+    else return 0.0f;
 }
 
-float WojtekEnvelope::wAmpLogUP(float amp0to1)
+void WojtekEnvelope::wLogAttackManip (float curve)
 {
-    if (amp0to1>0 && amp0to1<1) {
-        if((log10f(amp0to1))+1 <= 0) return 0.0f;
-        else return (log10f(amp0to1))+1;
-    } else if (amp0to1>=1) {
-        return 1.0f;
-    } else return 0.0f;
+    if (curve>=0.000000001 && curve<=0.999999999) {
+    wAttackCurveParam = curve;
+    } else if (curve>0.999) {
+        wAttackCurveParam = 0.999999999;
+    } else {
+        wAttackCurveParam = 0.000000001;
+    }
 }
+
+//==============================================================================
+
+float WojtekEnvelope::wLogDecay(float amp0to1)
+{
+//    if (amp0to1>0 && amp0to1<1) {
+//        return amp0to1;
+//    } else if (amp0to1>=1) {
+//        return 1.0f;
+//    } else return 0.0f;
+    
+    
+// LOGARYTHMIC
+    float amp;
+    if(amp0to1>0 && amp0to1<1) {
+        amp = ((-exp( (log(wDecayCurveParam)) / (1-amp0to1))) / wDecayCurveParam) + 1;
+        return amp;
+    } else if (amp0to1 >= 1) {
+        return 1.0f;
+    }
+    else return 0.0f;
+}
+
+void WojtekEnvelope::wLogDecayManip (float curve)
+{
+    if (curve>=0.000000001 && curve<=0.999999999) {
+        wDecayCurveParam = curve;
+    } else if (curve>0.999) {
+        wDecayCurveParam = 0.999999999;
+    } else {
+        wDecayCurveParam = 0.000000001;
+    }
+}
+
+//==============================================================================
+
+float WojtekEnvelope::wLogRelease(float amp0to1)
+{
+// LOGARYTHMIC
+    float amp;
+    if(amp0to1>0 && amp0to1<1) {
+        amp = ((-exp( (log(wReleaseCurveParam)) / (1.0-amp0to1))) / wReleaseCurveParam) + 1;
+        return amp;
+    } else if (amp0to1 >= 1) {
+        return 1.0f;
+    }
+    else return 0.0f;
+}
+
+void WojtekEnvelope::wLogReleaseManip (float curve)
+{
+    if (curve>=0.000000001 && curve<=0.999999999) {
+        wReleaseCurveParam = curve;
+    } else if (curve>0.999) {
+        wReleaseCurveParam = 0.999999999;
+    } else {
+        wReleaseCurveParam = 0.000000001;
+    }
+}
+
+//==============================================================================
+
 
 float WojtekEnvelope::wAmpLogDownDecay(float amp0to1, float sustain)
 {
