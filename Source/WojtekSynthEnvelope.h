@@ -41,6 +41,8 @@ private:
     int wSampleRate = 44100;
     int wBufferSize=512;
     
+    float gain = 0.1;
+    
     float wInput;
     float wAmplitude;
     float wAmplitudeR;

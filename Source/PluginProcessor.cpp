@@ -51,9 +51,9 @@ tree(*this, nullptr)
     NormalisableRange<float> relShapeRange(0.000000001, 0.999999999);
     tree.createAndAddParameter("releaseshape", "ReleaseShape", "R_shape", relShapeRange, 0.55f, nullptr, nullptr);
     
-    NormalisableRange<float> oscChoices(0, 6);
+    NormalisableRange<float> oscChoices(0, 5);
     tree.createAndAddParameter("wavetype1", "WaveType1", "WaveTypes1", oscChoices, 0, nullptr, nullptr);
-//    tree.createAndAddParameter("wavetype2", "WaveType2", "WaveTypes2", oscChoices, 0, nullptr, nullptr);
+    tree.createAndAddParameter("wavetype2", "WaveType2", "WaveTypes2", oscChoices, 1, nullptr, nullptr);
     
     NormalisableRange<float> oscMixRange(-1.0f, 1.0f);
     tree.createAndAddParameter("oscmix", "OscMix", "OscMix", oscMixRange, 0, nullptr, nullptr);
@@ -194,7 +194,7 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
             mojVoice->setMix(tree.getRawParameterValue("oscmix"));
             
             mojVoice->setWaveType1(tree.getRawParameterValue("wavetype1"));
-//            mojVoice->setWaveType2(tree.getRawParameterValue("wavetype2"));
+            mojVoice->setWaveType2(tree.getRawParameterValue("wavetype2"));
             mojVoice->setWAttackShape(tree.getRawParameterValue("attackshape"));
             mojVoice->setWDecayShape(tree.getRawParameterValue("decayshape"));
             mojVoice->setWReleaseShape(tree.getRawParameterValue("releaseshape"));

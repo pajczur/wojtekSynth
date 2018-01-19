@@ -33,7 +33,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
             if (wAmplitudeR != 1) wAmplitudeR = 1;
             logAmpRelTemp = wLogAttack(wAmplitude);
             
-            return wLogAttack(wAmplitude) * input;
+            return wLogAttack(wAmplitude) * gain * input;
         } else {
         
         // ===== DECAY & SUSTAIN ===========================
@@ -52,7 +52,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
                 logAmpRelTemp = wLogDecay(wAmplitude);
 
 
-                return wLogDecay(wAmplitude) * input;
+                return wLogDecay(wAmplitude) * gain * input;
             } else {
                 if (wAmplitude != wSustain) { wAmplitude = wSustain; ampRelTemp = wSustain; }
                 if (logAmpRelTemp != wLogDecay(wSustain)) logAmpRelTemp = wLogDecay(wSustain);
@@ -61,7 +61,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
                 if(fazaA != 0) fazaA = 0;
                 if(fazaR != 0) fazaR = 0;
 
-                return wLogDecay(wSustain) * input;
+                return wLogDecay(wSustain) * gain * input;
             }
         }
     } else {
@@ -83,7 +83,7 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
         if (wAmplitude <= 0) wAmplitude = 0;
         
         
-        return wLogRelease(wAmplitudeR) * logAmpRelTemp * input;
+        return wLogRelease(wAmplitudeR) * logAmpRelTemp * gain * input;
 //        return wAmpLogUP(wAmplitude) * input;
 //        return wAmpExp(wAmplitude) * input;
     }

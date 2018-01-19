@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "WojtekSynthOscillators.h"
+#include "WojtekSynthSetOsc2.h"
 #include "WojtekSynthEnvelopeGraph.h"
 
 
@@ -58,7 +59,7 @@ private:
     Label releaseSL;
     
     WojtekSynthOscillators setOsc1;
-//    WojtekSynthOscillators setOsc2;
+    WojtekSynthSetOsc2 setOsc2;
     
     Slider oscMixSlider;
     Label osc1L;
@@ -76,7 +77,6 @@ private:
     
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> oscMixAttache;
     
-//    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscGUIAttache;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthAudioProcessorEditor)
 };

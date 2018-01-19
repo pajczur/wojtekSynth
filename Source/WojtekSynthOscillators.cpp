@@ -16,20 +16,17 @@
 WojtekSynthOscillators::WojtekSynthOscillators(WojtekSynthAudioProcessor& p) :
 processor(p)
 {
-    setSize(200, 50);
+    setSize(300, 35);
     
-    oscMenu.addItem("sine",     1);
-    oscMenu.addItem("saw",      2);
-    oscMenu.addItem("savn",     3);
-    oscMenu.addItem("squere",   4);
-    oscMenu.addItem("triangle", 5);
-    oscMenu.addItem("phasor",   6);
-    oscMenu.addItem("noise",    7);
-    
-    oscMenu.setJustificationType(Justification::centred);
-    
-    oscGUIattache = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "wavetype", oscMenu);
-    addAndMakeVisible(&oscMenu);
+    osc1Menu.addItem("sine",     1);
+    osc1Menu.addItem("saw",      2);
+    osc1Menu.addItem("squere",   3);
+    osc1Menu.addItem("triangle", 4);
+    osc1Menu.addItem("phasor",   5);
+    osc1Menu.addItem("noise",    6);
+    osc1Menu.setJustificationType(Justification::centred);
+    setOsc1Attache = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "wavetype1", osc1Menu);
+    addAndMakeVisible(&osc1Menu);    
 }
 
 WojtekSynthOscillators::~WojtekSynthOscillators()
@@ -44,6 +41,5 @@ void WojtekSynthOscillators::paint (Graphics& g)
 void WojtekSynthOscillators::resized()
 {
 //    Rectangle<int> area = getLocalBounds().reduced(40);
-    oscMenu.setBounds(getLocalBounds());
-
+    osc1Menu.setBounds(0, 0, 150, 35);
 }

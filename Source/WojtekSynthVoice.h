@@ -94,14 +94,14 @@ public:
     {
         if (theWaveType1 == 0) return (double)osc1Mix*osc1.sinewave(frequency);
         if (theWaveType1 == 1) return (double)osc1Mix*osc1.saw(frequency);
-        if (theWaveType1 == 2) return (double)osc1Mix*osc1.sawn(frequency);
-        if (theWaveType1 == 3) return (double)osc1Mix*osc1.square(frequency);
-        if (theWaveType1 == 4) return (double)osc1Mix*osc1.triangle(frequency);
-        if (theWaveType1 == 5) return (double)osc1Mix*osc1.phasor(frequency);
-        if (theWaveType1 == 6) return (double)osc1Mix*osc1.noise();
+        if (theWaveType1 == 2) return (double)osc1Mix*osc1.square(frequency);
+        if (theWaveType1 == 3) return (double)osc1Mix*osc1.triangle(frequency);
+        if (theWaveType1 == 4) return (double)osc1Mix*osc1.phasor(frequency);
+        if (theWaveType1 == 5) return (double)osc1Mix*osc1.noise();
         
         else return 0.0f;
     }
+    
     
     void setWaveType2 (float* waveType)
     {
@@ -112,11 +112,10 @@ public:
     {
         if (theWaveType2 == 0) return (double)osc2Mix*osc2.sinewave(frequency);
         if (theWaveType2 == 1) return (double)osc2Mix*osc2.saw(frequency);
-        if (theWaveType2 == 2) return (double)osc2Mix*osc2.sawn(frequency);
-        if (theWaveType2 == 3) return (double)osc2Mix*osc2.square(frequency);
-        if (theWaveType2 == 4) return (double)osc2Mix*osc2.triangle(frequency);
-        if (theWaveType2 == 5) return (double)osc2Mix*osc2.phasor(frequency);
-        if (theWaveType2 == 6) return (double)osc2Mix*osc2.noise();
+        if (theWaveType2 == 2) return (double)osc2Mix*osc2.square(frequency);
+        if (theWaveType2 == 3) return (double)osc2Mix*osc2.triangle(frequency);
+        if (theWaveType2 == 4) return (double)osc2Mix*osc2.phasor(frequency);
+        if (theWaveType2 == 5) return (double)osc2Mix*osc2.noise();
         
         else return 0.0f;
     }

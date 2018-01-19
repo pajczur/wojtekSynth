@@ -14,7 +14,7 @@
 
 //==============================================================================
 WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), setOsc1(p)
+    : AudioProcessorEditor (&p), processor (p), setOsc1(p), setOsc2(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -120,7 +120,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     oscMixAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "oscmix", oscMixSlider);
     
     addAndMakeVisible(&setOsc1);
-//    addAndMakeVisible(&setOsc2);
+    addAndMakeVisible(&setOsc2);
     addAndMakeVisible(&envGraphWindow);
 }
 
@@ -147,7 +147,7 @@ void WojtekSynthAudioProcessorEditor::resized()
     releaseShape.setBounds(640, 250, 85, 85);
     
     setOsc1.setBounds(350+((350-200)/2)-3, 440, 150, 35);
-//    setOsc2.setBounds(500+((350-200)/2)-3, 440, 150, 35);
+    setOsc2.setBounds(500+((350-200)/2)-3, 440, 150, 35);
     oscMixSlider.setBounds(417, 325+(3*15), 310, 50);
     envGraphWindow.setBounds(400, 25, envGraphWindow.getWidth(), envGraphWindow.getHeight());
 }

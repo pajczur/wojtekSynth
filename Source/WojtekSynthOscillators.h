@@ -26,9 +26,9 @@ public:
     void resized() override;
 
 private:
-    ComboBox oscMenu;
-    
-    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscGUIattache;
+    ComboBox osc1Menu;
+ 
+    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
     
     WojtekSynthAudioProcessor& processor;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthOscillators)
