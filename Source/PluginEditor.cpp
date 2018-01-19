@@ -14,11 +14,11 @@
 
 //==============================================================================
 WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), oscGUI(p)
+    : AudioProcessorEditor (&p), processor (p), setOsc1(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (775, 430);
+    setSize (775, 500);
     
     attackSL.setText("A. shape", dontSendNotification);
     attackSL.setJustificationType(Justification::centredBottom);
@@ -28,8 +28,8 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     attackShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
     attackShape.setRange(0.000000001, 0.999999999);
     attackShape.addListener(this);
-    attackShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "attackshape", attackShape);
     addAndMakeVisible(&attackShape);
+    attackShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "attackshape", attackShape);
     
     decaySL.setText("D. shape", dontSendNotification);
     decaySL.setJustificationType(Justification::centredBottom);
@@ -39,8 +39,8 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     decayShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
     decayShape.setRange(0.000000001, 0.999999999);
     decayShape.addListener(this);
-    decayShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "decayshape", decayShape);
     addAndMakeVisible(&decayShape);
+    decayShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "decayshape", decayShape);
     
     releaseSL.setText("R. shape", dontSendNotification);
     releaseSL.setJustificationType(Justification::centredBottom);
@@ -50,8 +50,8 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     releaseShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
     releaseShape.setRange(0.000000001, 0.999999999);
     releaseShape.addListener(this);
-    releaseShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "releaseshape", releaseShape);
     addAndMakeVisible(&releaseShape);
+    releaseShapeAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "releaseshape", releaseShape);
     
     
     
@@ -65,7 +65,6 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     attackSlider.setTextValueSuffix(" ms");
     attackSlider.addListener(this);
     addAndMakeVisible(&attackSlider);
-//    attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.attackTree, "attack", attackSlider);
     attackAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "attack", attackSlider);
     
     decayL.setText("wDecay", dontSendNotification);
@@ -78,7 +77,6 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     decaySlider.setTextValueSuffix(" ms");
     decaySlider.addListener(this);
     addAndMakeVisible(&decaySlider);
-//    decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.decayTree, "decay", decaySlider);
     decayAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "decay", decaySlider);
     
     sustainL.setText("wSustain", dontSendNotification);
@@ -91,7 +89,6 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     sustainSlider.setTextValueSuffix(" dB");
     sustainSlider.addListener(this);
     addAndMakeVisible(&sustainSlider);
-//    sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.sustainTree, "sustain", sustainSlider);
     sustainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sustain", sustainSlider);
     
     releaseL.setText("wRelease", dontSendNotification);
@@ -104,10 +101,26 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     releaseSlider.setTextValueSuffix(" ms");
     releaseSlider.addListener(this);
     addAndMakeVisible(&releaseSlider);
-//    releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.releaseTree, "release", releaseSlider);
     releaseAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "release", releaseSlider);
     
-    addAndMakeVisible(&oscGUI);
+    osc1L.setText("osc1", dontSendNotification);
+    osc1L.setJustificationType(Justification::bottomLeft);
+    osc1L.attachToComponent(&oscMixSlider, false);
+    addAndMakeVisible(&osc1L);
+    
+    osc2L.setText("osc2", dontSendNotification);
+    osc2L.setJustificationType(Justification::bottomRight);
+    osc2L.attachToComponent(&oscMixSlider, false);
+    addAndMakeVisible(&osc2L);
+    
+    oscMixSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
+    oscMixSlider.setRange(-1.0f, 1.0f);
+    oscMixSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    addAndMakeVisible(&oscMixSlider);
+    oscMixAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "oscmix", oscMixSlider);
+    
+    addAndMakeVisible(&setOsc1);
+//    addAndMakeVisible(&setOsc2);
     addAndMakeVisible(&envGraphWindow);
 }
 
@@ -125,15 +138,17 @@ void WojtekSynthAudioProcessorEditor::paint (Graphics& g)
 void WojtekSynthAudioProcessorEditor::resized()
 {
     attackSlider.setBounds(50, 25, 300, 50);
-    decaySlider.setBounds(50, 125, 300, 50);
-    sustainSlider.setBounds(50, 225, 300, 50);
-    releaseSlider.setBounds(50, 325, 300, 50);
+    decaySlider.setBounds(50, 125+15, 300, 50);
+    sustainSlider.setBounds(50, 225+(2*15), 300, 50);
+    releaseSlider.setBounds(50, 325+(3*15), 300, 50);
     
     attackShape.setBounds(420, 250, 85, 85);
     decayShape.setBounds(530, 250, 85, 85);
     releaseShape.setBounds(640, 250, 85, 85);
     
-    oscGUI.setBounds(400+((350-200)/2), 360, 200, 50);
+    setOsc1.setBounds(350+((350-200)/2)-3, 440, 150, 35);
+//    setOsc2.setBounds(500+((350-200)/2)-3, 440, 150, 35);
+    oscMixSlider.setBounds(417, 325+(3*15), 310, 50);
     envGraphWindow.setBounds(400, 25, envGraphWindow.getWidth(), envGraphWindow.getHeight());
 }
 

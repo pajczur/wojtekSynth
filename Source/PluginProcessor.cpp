@@ -42,9 +42,6 @@ tree(*this, nullptr)
     NormalisableRange<float> releaseRange (2500.0f, 2000000.0f);
     tree.createAndAddParameter("release", "Release", "Speed", releaseRange, 200000.0f, nullptr, nullptr);
     
-    NormalisableRange<float> oscChoices(0, 6);
-    tree.createAndAddParameter("wavetype", "WaveType", "WaveTypes", oscChoices, 0, nullptr, nullptr);
-    
     NormalisableRange<float> attShapeRange(0.000000001, 0.999999999);
     tree.createAndAddParameter("attackshape", "AttackShape", "A_shape", attShapeRange, 0.55f, nullptr, nullptr);
     
@@ -53,6 +50,16 @@ tree(*this, nullptr)
     
     NormalisableRange<float> relShapeRange(0.000000001, 0.999999999);
     tree.createAndAddParameter("releaseshape", "ReleaseShape", "R_shape", relShapeRange, 0.55f, nullptr, nullptr);
+    
+    NormalisableRange<float> oscChoices(0, 6);
+    tree.createAndAddParameter("wavetype1", "WaveType1", "WaveTypes1", oscChoices, 0, nullptr, nullptr);
+//    tree.createAndAddParameter("wavetype2", "WaveType2", "WaveTypes2", oscChoices, 0, nullptr, nullptr);
+    
+    NormalisableRange<float> oscMixRange(-1.0f, 1.0f);
+    tree.createAndAddParameter("oscmix", "OscMix", "OscMix", oscMixRange, 0, nullptr, nullptr);
+    
+    
+    
     
     mojSynt.clearVoices();
     
@@ -184,7 +191,10 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
             mojVoice->setWSustain(tree.getRawParameterValue("sustain"));
             mojVoice->setWRelease(tree.getRawParameterValue("release"));
             
-            mojVoice->setWaveType(tree.getRawParameterValue("wavetype"));
+            mojVoice->setMix(tree.getRawParameterValue("oscmix"));
+            
+            mojVoice->setWaveType1(tree.getRawParameterValue("wavetype1"));
+//            mojVoice->setWaveType2(tree.getRawParameterValue("wavetype2"));
             mojVoice->setWAttackShape(tree.getRawParameterValue("attackshape"));
             mojVoice->setWDecayShape(tree.getRawParameterValue("decayshape"));
             mojVoice->setWReleaseShape(tree.getRawParameterValue("releaseshape"));

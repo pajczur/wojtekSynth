@@ -70,23 +70,55 @@ public:
     
     //==============================================================================
     
-    void setWaveType (float* waveType)
+    void setMix (float* mix)
     {
-        theWaveType = *waveType;
+        if (*mix>=(-1) && *mix<=1) {
+            osc1Mix = 1 - (1 + *mix)/2;
+            osc2Mix = 1 + (*mix - 1)/2;
+        } else if (*mix<(-1)) {
+            osc1Mix = 1;
+            osc2Mix = 0;
+        } else {
+            osc1Mix = 0;
+            osc2Mix = 1;
+        }
+//        std::cout << "osc1: " << osc1Mix << ";    osc2: " << osc2Mix << std::endl;
     }
     
-    double oscWaveType()
+    void setWaveType1 (float* waveType)
     {
-        if (theWaveType == 0) return osc1.sinewave(frequency);
-        if (theWaveType == 1) return osc1.saw(frequency);
-        if (theWaveType == 2) return osc1.sawn(frequency);
-        if (theWaveType == 3) return osc1.square(frequency);
-        if (theWaveType == 4) return osc1.triangle(frequency);
-        if (theWaveType == 5) return osc1.phasor(frequency);
-        if (theWaveType == 6) return osc1.noise();
+        theWaveType1 = *waveType;
+    }
+    
+    double oscWaveType1()
+    {
+        if (theWaveType1 == 0) return (double)osc1Mix*osc1.sinewave(frequency);
+        if (theWaveType1 == 1) return (double)osc1Mix*osc1.saw(frequency);
+        if (theWaveType1 == 2) return (double)osc1Mix*osc1.sawn(frequency);
+        if (theWaveType1 == 3) return (double)osc1Mix*osc1.square(frequency);
+        if (theWaveType1 == 4) return (double)osc1Mix*osc1.triangle(frequency);
+        if (theWaveType1 == 5) return (double)osc1Mix*osc1.phasor(frequency);
+        if (theWaveType1 == 6) return (double)osc1Mix*osc1.noise();
         
         else return 0.0f;
+    }
+    
+    void setWaveType2 (float* waveType)
+    {
+        theWaveType2 = *waveType;
+    }
+    
+    double oscWaveType2()
+    {
+        if (theWaveType2 == 0) return (double)osc2Mix*osc2.sinewave(frequency);
+        if (theWaveType2 == 1) return (double)osc2Mix*osc2.saw(frequency);
+        if (theWaveType2 == 2) return (double)osc2Mix*osc2.sawn(frequency);
+        if (theWaveType2 == 3) return (double)osc2Mix*osc2.square(frequency);
+        if (theWaveType2 == 4) return (double)osc2Mix*osc2.triangle(frequency);
+        if (theWaveType2 == 5) return (double)osc2Mix*osc2.phasor(frequency);
+        if (theWaveType2 == 6) return (double)osc2Mix*osc2.noise();
         
+        else return 0.0f;
     }
     
     //==============================================================================
@@ -138,7 +170,7 @@ public:
 //            outputBuffer.addSample(0, startSample, theSquSound);
    
 //            if (dupa == 0) { dupa = 1; std::cout << " SZAMBO " << std::endl; }
-            float wojtekSound = env2.wojtekADSR((float)oscWaveType(), env2.getTrigger());
+            float wojtekSound = env2.wojtekADSR((float)oscWaveType1()+(float)oscWaveType2(), env2.getTrigger());
             outputBuffer.addSample(0, startSample, wojtekSound);
             
 
@@ -169,7 +201,10 @@ public:
 private:
     double level;
     double frequency;
-    int theWaveType;
+    int theWaveType1;
+    int theWaveType2;
+    double osc1Mix;
+    double osc2Mix;
 
     maxiOsc osc1;
     maxiOsc osc2;

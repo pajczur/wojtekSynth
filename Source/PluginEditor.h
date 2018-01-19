@@ -57,7 +57,12 @@ private:
     Label releaseL;
     Label releaseSL;
     
-    WojtekSynthOscillators oscGUI;
+    WojtekSynthOscillators setOsc1;
+//    WojtekSynthOscillators setOsc2;
+    
+    Slider oscMixSlider;
+    Label osc1L;
+    Label osc2L;
     
     WojtekSynthEnvelopeGraph envGraphWindow;
     
@@ -69,7 +74,9 @@ private:
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> decayShapeAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> releaseShapeAttache;
     
-    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscGUIAttache;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> oscMixAttache;
+    
+//    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> oscGUIAttache;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthAudioProcessorEditor)
 };
