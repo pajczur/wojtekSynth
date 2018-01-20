@@ -11,7 +11,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
 //==============================================================================
 WojtekSynthAudioProcessor::WojtekSynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
