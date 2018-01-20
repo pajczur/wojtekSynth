@@ -52,14 +52,14 @@
             file="Source/WojtekSynthEnvelope.cpp"/>
       <FILE id="UhxJG5" name="WojtekSynthEnvelope.h" compile="0" resource="0"
             file="Source/WojtekSynthEnvelope.h"/>
-      <FILE id="XZGUOT" name="WojtekSynthOscillators.cpp" compile="1" resource="0"
-            file="Source/WojtekSynthOscillators.cpp"/>
-      <FILE id="zx4BlE" name="WojtekSynthOscillators.h" compile="0" resource="0"
-            file="Source/WojtekSynthOscillators.h"/>
-      <FILE id="uavPMU" name="WojtekSynthSetOsc2.cpp" compile="1" resource="0"
-            file="Source/WojtekSynthSetOsc2.cpp"/>
-      <FILE id="s9KMMu" name="WojtekSynthSetOsc2.h" compile="0" resource="0"
-            file="Source/WojtekSynthSetOsc2.h"/>
+      <FILE id="UBVXJq" name="WojtekSynthOsc1.cpp" compile="1" resource="0"
+            file="Source/WojtekSynthOsc1.cpp"/>
+      <FILE id="zI0ywB" name="WojtekSynthOsc1.h" compile="0" resource="0"
+            file="Source/WojtekSynthOsc1.h"/>
+      <FILE id="qSpnl1" name="WojtekSynthOsc2.cpp" compile="1" resource="0"
+            file="Source/WojtekSynthOsc2.cpp"/>
+      <FILE id="CaTFlB" name="WojtekSynthOsc2.h" compile="0" resource="0"
+            file="Source/WojtekSynthOsc2.h"/>
       <FILE id="zKMbQi" name="WojtekSynthEnvelopeGraph.cpp" compile="1" resource="0"
             file="Source/WojtekSynthEnvelopeGraph.cpp"/>
       <FILE id="rXRrD9" name="WojtekSynthEnvelopeGraph.h" compile="0" resource="0"

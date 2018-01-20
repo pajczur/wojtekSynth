@@ -35,13 +35,15 @@ public:
     float wLogRelease(float amp0to1);
     void wLogReleaseManip (float curve);
     
+    void wojtekSetGain (float gain);
+    
     
 private:
     int trigger = 0;
     int wSampleRate = 44100;
     int wBufferSize=512;
     
-    float gain = 0.1;
+    float wGain = 0.1;
     
     float wInput;
     float wAmplitude;

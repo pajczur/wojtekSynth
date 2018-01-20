@@ -25,7 +25,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     addAndMakeVisible(&attackSL);
     attackSL.attachToComponent(&attackShape, false);
     attackShape.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    attackShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    attackShape.setTextBoxStyle(Slider::NoTextBox, false, 80, 20);
     attackShape.setRange(0.000000001, 0.999999999);
     attackShape.addListener(this);
     addAndMakeVisible(&attackShape);
@@ -36,7 +36,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     addAndMakeVisible(&decaySL);
     decaySL.attachToComponent(&decayShape, false);
     decayShape.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    decayShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    decayShape.setTextBoxStyle(Slider::NoTextBox, false, 80, 20);
     decayShape.setRange(0.000000001, 0.999999999);
     decayShape.addListener(this);
     addAndMakeVisible(&decayShape);
@@ -47,7 +47,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     addAndMakeVisible(&releaseSL);
     releaseSL.attachToComponent(&releaseShape, false);
     releaseShape.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    releaseShape.setTextBoxStyle(Slider::TextBoxBelow, false, 80, 20);
+    releaseShape.setTextBoxStyle(Slider::NoTextBox, false, 80, 20);
     releaseShape.setRange(0.000000001, 0.999999999);
     releaseShape.addListener(this);
     addAndMakeVisible(&releaseShape);
@@ -61,7 +61,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     attackL.attachToComponent(&attackSlider, false);
     attackSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     attackSlider.setRange(2500.0f, 2000000.0f);
-    attackSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    attackSlider.setTextBoxStyle(Slider::NoTextBox, false, 100, 20);
     attackSlider.setTextValueSuffix(" ms");
     attackSlider.addListener(this);
     addAndMakeVisible(&attackSlider);
@@ -73,7 +73,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     decayL.attachToComponent(&decaySlider, false);
     decaySlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     decaySlider.setRange(2500.0f, 2000000.0f);
-    decaySlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    decaySlider.setTextBoxStyle(Slider::NoTextBox, false, 100, 20);
     decaySlider.setTextValueSuffix(" ms");
     decaySlider.addListener(this);
     addAndMakeVisible(&decaySlider);
@@ -85,7 +85,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     sustainL.attachToComponent(&sustainSlider, false);
     sustainSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     sustainSlider.setRange(0.0f, 1.0f);
-    sustainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    sustainSlider.setTextBoxStyle(Slider::NoTextBox, false, 100, 20);
     sustainSlider.setTextValueSuffix(" dB");
     sustainSlider.addListener(this);
     addAndMakeVisible(&sustainSlider);
@@ -97,7 +97,7 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     releaseL.attachToComponent(&releaseSlider, false);
     releaseSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     releaseSlider.setRange(2500.0f, 2000000.0f);
-    releaseSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    releaseSlider.setTextBoxStyle(Slider::NoTextBox, false, 100, 20);
     releaseSlider.setTextValueSuffix(" ms");
     releaseSlider.addListener(this);
     addAndMakeVisible(&releaseSlider);
@@ -113,15 +113,33 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     osc2L.attachToComponent(&oscMixSlider, false);
     addAndMakeVisible(&osc2L);
     
+    mixL.setText("MIX", dontSendNotification);
+    mixL.setJustificationType(Justification::centredBottom);
+    mixL.attachToComponent(&oscMixSlider, false);
+    addAndMakeVisible(&mixL);
+    
     oscMixSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     oscMixSlider.setRange(-1.0f, 1.0f);
-    oscMixSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    oscMixSlider.setTextBoxStyle(Slider::NoTextBox, false, 100, 20);
     addAndMakeVisible(&oscMixSlider);
     oscMixAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "oscmix", oscMixSlider);
     
     addAndMakeVisible(&setOsc1);
     addAndMakeVisible(&setOsc2);
     addAndMakeVisible(&envGraphWindow);
+    
+    gainL.setText("wGain", dontSendNotification);
+    gainL.setJustificationType(Justification::centredBottom);
+    addAndMakeVisible(&gainL);
+    gainL.attachToComponent(&gainSlider, false);
+    gainSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    gainSlider.setRange(-66.0f, 0.0f);
+    gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 100, 20);
+    gainSlider.setTextValueSuffix(" dB");
+    gainSlider.addListener(this);
+    addAndMakeVisible(&gainSlider);
+    gainAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "gain", gainSlider);
+    
 }
 
 WojtekSynthAudioProcessorEditor::~WojtekSynthAudioProcessorEditor()
@@ -133,22 +151,29 @@ void WojtekSynthAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.setColour(Colours::lightblue);
+    g.drawText("0s", 401, 9, 20, 10, Justification::centredTop);
+    g.drawText("2s", 401+(1*110), 9, 20, 10, Justification::centredTop);
+    g.drawText("4s", 401+(2*110), 9, 20, 10, Justification::centredTop);
+    g.drawText("6s", 401+(3*110), 9, 20, 10, Justification::centredTop);
 }
 
 void WojtekSynthAudioProcessorEditor::resized()
 {
     attackSlider.setBounds(50, 25, 300, 50);
-    decaySlider.setBounds(50, 125+15, 300, 50);
-    sustainSlider.setBounds(50, 225+(2*15), 300, 50);
-    releaseSlider.setBounds(50, 325+(3*15), 300, 50);
+    decaySlider.setBounds(50, 125-5, 300, 50);
+    sustainSlider.setBounds(50, 225-(2*5), 300, 50);
+    releaseSlider.setBounds(50, 325-(3*5), 300, 50);
     
-    attackShape.setBounds(420, 250, 85, 85);
-    decayShape.setBounds(530, 250, 85, 85);
-    releaseShape.setBounds(640, 250, 85, 85);
+    attackShape.setBounds(420, 250, 75, 70);
+    decayShape.setBounds(530, 250, 75, 70);
+    releaseShape.setBounds(640, 250, 75, 70);
     
     setOsc1.setBounds(350+((350-200)/2)-3, 440, 150, 35);
     setOsc2.setBounds(500+((350-200)/2)-3, 440, 150, 35);
-    oscMixSlider.setBounds(417, 325+(3*15), 310, 50);
+    oscMixSlider.setBounds(417, 325+65, 310, 50);
+    
+    gainSlider.setBounds(200-35, 400, 70, 70);
     envGraphWindow.setBounds(400, 25, envGraphWindow.getWidth(), envGraphWindow.getHeight());
 }
 
@@ -184,10 +209,10 @@ void WojtekSynthAudioProcessorEditor::drawAttack()
     
     for (int i=0; i<=100; i++) {
         envGraphWindow.attackPath.lineTo(envGraphWindow.startPointX+((330.0f/3.0f)*attackPos*i/100),
-                                         envGraphWindow.startPointY - (180*envGraphWindow.adsrGraph.wLogAttack((float)i/100.0f)));
+                                         envGraphWindow.startPointY - (160*envGraphWindow.adsrGraph.wLogAttack((float)i/100.0f)));
         
         if(i == 100) {
-            envGraphWindow.jointPathA.addEllipse(envGraphWindow.startPointX+((330.0f/3.0f)*attackPos*i/100)-3, envGraphWindow.startPointY - (180*envGraphWindow.adsrGraph.wLogAttack((float)i/100.0f))-3, 6, 6);
+            envGraphWindow.jointPathA.addEllipse(envGraphWindow.startPointX+((330.0f/3.0f)*attackPos*i/100)-3, envGraphWindow.startPointY - (160*envGraphWindow.adsrGraph.wLogAttack((float)i/100.0f))-3, 6, 6);
         }
     }
 }
@@ -204,12 +229,12 @@ void WojtekSynthAudioProcessorEditor::drawDecay()
     envGraphWindow.adsrGraph.wLogDecayManip(decayShape.getValue());
     
     for (int i=0; i<=100; i++) {
-        envGraphWindow.decayPath.lineTo(envGraphWindow.jointPathA.getCurrentPosition().getX()+((330.0f/3.0f)*decayPos*i/100),
-                                        envGraphWindow.jointPathA.getCurrentPosition().getY() + (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogDecay(decInitAmp)))+3);
+        envGraphWindow.decayPath.lineTo(-0.5+envGraphWindow.jointPathA.getCurrentPosition().getX()+((330.0f/3.0f)*decayPos*i/100),
+                                        envGraphWindow.jointPathA.getCurrentPosition().getY() + (160*sustainPos*(1-envGraphWindow.adsrGraph.wLogDecay(decInitAmp)))+3);
         
         
         if(i == 100) {
-            envGraphWindow.jointPathD.addEllipse(envGraphWindow.jointPathA.getCurrentPosition().getX()+((330.0f/3.0f)*decayPos*i/100)-3, envGraphWindow.jointPathA.getCurrentPosition().getY() + (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogDecay(decInitAmp)))-1, 8, 8);
+            envGraphWindow.jointPathD.addEllipse(-0.5+envGraphWindow.jointPathA.getCurrentPosition().getX()+((330.0f/3.0f)*decayPos*i/100)-3, envGraphWindow.jointPathA.getCurrentPosition().getY() + (160*sustainPos*(1-envGraphWindow.adsrGraph.wLogDecay(decInitAmp)))-1, 8, 8);
         }
         decInitAmp -= 1.0f/100.0f;
     }
@@ -233,11 +258,11 @@ void WojtekSynthAudioProcessorEditor::drawRelease()
     
     for (int i=0; i<=100; i++) {
         envGraphWindow.releasePath.lineTo(wXYr.getX()+((330.0f/3.0f)*releasePos*i/100), wXYr.getY()+
-                (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogRelease(relInitAmp)))
+                (160*sustainPos*(1-envGraphWindow.adsrGraph.wLogRelease(relInitAmp)))
                                           +4);
         
         if(i == 100) {
-            envGraphWindow.jointPathR.addEllipse(wXYr.getX()+((330.0f/3.0f)*releasePos*i/100)-3, wXYr.getY() + (180*sustainPos*(1-envGraphWindow.adsrGraph.wLogRelease(relInitAmp)))+1, 6, 6);
+            envGraphWindow.jointPathR.addEllipse(wXYr.getX()+((330.0f/3.0f)*releasePos*i/100)-3, wXYr.getY() + (160*sustainPos*(1-envGraphWindow.adsrGraph.wLogRelease(relInitAmp)))+1, 6, 6);
         }
         relInitAmp -= 1.0f/100.0f;
     }

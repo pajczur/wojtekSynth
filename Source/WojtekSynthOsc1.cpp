@@ -9,11 +9,11 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "WojtekSynthOscillators.h"
+#include "WojtekSynthOsc1.h"
 
 
 //==============================================================================
-WojtekSynthOscillators::WojtekSynthOscillators(WojtekSynthAudioProcessor& p) :
+WojtekSynthOsc1::WojtekSynthOsc1(WojtekSynthAudioProcessor& p) :
 processor(p)
 {
     setSize(300, 35);
@@ -29,16 +29,16 @@ processor(p)
     addAndMakeVisible(&osc1Menu);    
 }
 
-WojtekSynthOscillators::~WojtekSynthOscillators()
+WojtekSynthOsc1::~WojtekSynthOsc1()
 {
 }
 
-void WojtekSynthOscillators::paint (Graphics& g)
+void WojtekSynthOsc1::paint (Graphics& g)
 {
 
 }
 
-void WojtekSynthOscillators::resized()
+void WojtekSynthOsc1::resized()
 {
 //    Rectangle<int> area = getLocalBounds().reduced(40);
     osc1Menu.setBounds(0, 0, 150, 35);

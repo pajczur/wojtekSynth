@@ -16,11 +16,11 @@
 //==============================================================================
 /*
 */
-class WojtekSynthOscillators    : public Component
+class WojtekSynthOsc1    : public Component
 {
 public:
-    WojtekSynthOscillators(WojtekSynthAudioProcessor& p);
-    ~WojtekSynthOscillators();
+    WojtekSynthOsc1(WojtekSynthAudioProcessor& p);
+    ~WojtekSynthOsc1();
 
     void paint (Graphics&) override;
     void resized() override;
@@ -31,5 +31,5 @@ private:
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
     
     WojtekSynthAudioProcessor& processor;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthOscillators)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthOsc1)
 };

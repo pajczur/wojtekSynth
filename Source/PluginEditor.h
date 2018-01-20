@@ -12,8 +12,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "WojtekSynthOscillators.h"
-#include "WojtekSynthSetOsc2.h"
+#include "WojtekSynthOsc1.h"
+#include "WojtekSynthOsc2.h"
 #include "WojtekSynthEnvelopeGraph.h"
 
 
@@ -41,6 +41,9 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     WojtekSynthAudioProcessor& processor;
+    Slider gainSlider;
+    Label gainL;
+    
     Slider attackSlider;
     Slider decaySlider;
     Slider sustainSlider;
@@ -58,12 +61,13 @@ private:
     Label releaseL;
     Label releaseSL;
     
-    WojtekSynthOscillators setOsc1;
-    WojtekSynthSetOsc2 setOsc2;
+    WojtekSynthOsc1 setOsc1;
+    WojtekSynthOsc2 setOsc2;
     
     Slider oscMixSlider;
     Label osc1L;
     Label osc2L;
+    Label mixL;
     
     WojtekSynthEnvelopeGraph envGraphWindow;
     
@@ -76,7 +80,7 @@ private:
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> releaseShapeAttache;
     
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> oscMixAttache;
-    
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> gainAttache;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthAudioProcessorEditor)
 };

@@ -58,6 +58,9 @@ tree(*this, nullptr)
     NormalisableRange<float> oscMixRange(-1.0f, 1.0f);
     tree.createAndAddParameter("oscmix", "OscMix", "OscMix", oscMixRange, 0, nullptr, nullptr);
     
+    NormalisableRange<float> gainRange(-66.0f, 0.0f);
+    tree.createAndAddParameter("gain", "Gain", "Gain", gainRange, -10.0f, nullptr, nullptr);
+    
     
     
     
@@ -198,6 +201,8 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
             mojVoice->setWAttackShape(tree.getRawParameterValue("attackshape"));
             mojVoice->setWDecayShape(tree.getRawParameterValue("decayshape"));
             mojVoice->setWReleaseShape(tree.getRawParameterValue("releaseshape"));
+            
+            mojVoice->setWGain(tree.getRawParameterValue("gain"));
         }
     }
 

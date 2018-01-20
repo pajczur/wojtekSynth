@@ -121,6 +121,13 @@ public:
     }
     
     //==============================================================================
+    
+    void setWGain (float* gain)
+    {
+        env2.wojtekSetGain(*gain);
+    }
+    
+    //==============================================================================
 
     void startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition) override
     {

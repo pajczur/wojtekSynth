@@ -34,14 +34,20 @@ void WojtekSynthEnvelopeGraph::paint (Graphics& g)
     g.fillAll (Colours::black);   // clear the background
     g.setColour(Colours::white);
     
-    g.strokePath(attackPath, PathStrokeType(1));
+    g.strokePath(attackPath, PathStrokeType(2));
     g.fillPath(jointPathA);
     
-    g.strokePath(decayPath, PathStrokeType(1));
+    g.strokePath(decayPath, PathStrokeType(2));
     g.fillPath(jointPathD);
     
-    g.strokePath(releasePath, PathStrokeType(1));
+    g.strokePath(releasePath, PathStrokeType(2));
     g.fillPath(jointPathR);
+    
+    g.setColour(Colours::lightblue);
+    g.drawLine(10, 0, 10, 200);
+    g.drawLine(10+(330/3), 0, 10+(330/3), 200);
+    g.drawLine(10+(330*2/3), 0, 10+(330*2/3), 200);
+    g.drawLine(10+330, 0, 10+330, 200);
 }
 
 void WojtekSynthEnvelopeGraph::resized()
