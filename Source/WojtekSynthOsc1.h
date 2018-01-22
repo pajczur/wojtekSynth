@@ -16,19 +16,22 @@
 //==============================================================================
 /*
 */
-class WojtekSynthOsc1    : public Component
+class WojtekSynthOsc1    : public Component,
+                           public ComboBox::Listener
 {
 public:
     WojtekSynthOsc1(WojtekSynthAudioProcessor& p);
     ~WojtekSynthOsc1();
+    
+    void comboBoxChanged (ComboBox *comboBoxThatHasChanged) override;
 
     void paint (Graphics&) override;
     void resized() override;
 
-private:
     ComboBox osc1Menu;
+private:
  
-    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
+//    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
     
     WojtekSynthAudioProcessor& processor;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthOsc1)

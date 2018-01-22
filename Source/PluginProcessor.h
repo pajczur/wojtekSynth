@@ -61,16 +61,17 @@ public:
     
     AudioProcessorValueTreeState tree;
 
+    bool wParamIsChanged = true;
     WojtekSynthVoice* mojVoice;
 private:
     Synthesiser mojSynt;
     
     int test=0;
     int test2=0;
-    
 
     double lastSampleRate;
     
+    int dupa = 0;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthAudioProcessor)
 };

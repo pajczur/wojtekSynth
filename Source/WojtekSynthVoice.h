@@ -26,7 +26,6 @@ public:
     
     void setWAttack (float* atak)
     {
-        env1.setAttack((double)*atak);
         env2.wojtekSetAttack(*atak);
     }
     
@@ -40,13 +39,11 @@ public:
     
     void setWDecay (float* decay)
     {
-        env1.setDecay((double)*decay);
         env2.wojtekSetDecay(*decay);
     }
 
     void setWSustain (float* sustain)
     {
-        env1.setSustain((double)*sustain);
         env2.wojtekSetSustain(*sustain);
     }
     
@@ -59,7 +56,6 @@ public:
 
     void setWRelease (float* release)
     {
-        env1.setRelease((double)*release);
         env2.wojtekSetRelease(*release);
     }
     
@@ -82,7 +78,6 @@ public:
             osc1Mix = 0;
             osc2Mix = 1;
         }
-//        std::cout << "osc1: " << osc1Mix << ";    osc2: " << osc2Mix << std::endl;
     }
     
     void setWaveType1 (float* waveType)
@@ -133,16 +128,13 @@ public:
     {
         level = velocity;
         env2.setTrigger(1);
-        env1.trigger = 1;
         frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-//        std::cout << maxiSettings::sampleRate << std::endl;
     }
     
     //==============================================================================
 
     void stopNote (float velocity, bool allowTailOff) override
     {
-        env1.trigger = 0;
         env2.setTrigger(0);
         allowTailOff = true;
 
@@ -157,28 +149,14 @@ public:
     void renderNextBlock (AudioBuffer< float > &outputBuffer, int startSample, int numSamples) override
     {
 
-//        env1.setAttack(100.0);
-//        env1.setDecay(1000.0);
-//        env1.setSustain(0.8);
-//        env1.setRelease(50.0);
-        
-        
-
         for (int sample=0; sample < numSamples; ++sample)
         {
-//            double theSinus = osc1.sinewave(frequency);
-//            double theSquere = osc2.square(frequency);
 
-//            double theSinSound = env1.adsr(theSinus, env1.trigger) * level;
-//            outputBuffer.addSample(0, startSample, theSinSound);
-
-//            double theSquSound = env1.adsr(theSquere, env1.trigger) * level;
-//            outputBuffer.addSample(0, startSample, theSquSound);
-   
-//            if (dupa == 0) { dupa = 1; std::cout << " SZAMBO " << std::endl; }
             float wojtekSound = env2.wojtekADSR((float)oscWaveType1()+(float)oscWaveType2(), env2.getTrigger());
-            outputBuffer.addSample(0, startSample, wojtekSound);
-            
+           
+            for(int channel = 0; channel<outputBuffer.getNumChannels(); ++channel) {
+                outputBuffer.addSample(channel, startSample, wojtekSound);
+            }
 
             ++startSample;
         }
@@ -201,10 +179,10 @@ public:
     
     //==============================================================================
     
-    maxiEnv env1;
     WojtekEnvelope env2;
-//    WojtekSynthOscillators 
+
 private:
+    double extSampRat;
     double level;
     double frequency;
     int theWaveType1;

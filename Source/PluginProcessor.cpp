@@ -23,10 +23,6 @@ WojtekSynthAudioProcessor::WojtekSynthAudioProcessor()
                      #endif
                   ),
 tree(*this, nullptr)
-//attackTree(*this, nullptr),
-//decayTree(*this, nullptr),
-//sustainTree(*this, nullptr),
-//releaseTree(*this, nullptr)
 #endif
 {
     NormalisableRange<float> attackRange (2500.0f, 2000000.0f);
@@ -60,8 +56,8 @@ tree(*this, nullptr)
     NormalisableRange<float> gainRange(-66.0f, 0.0f);
     tree.createAndAddParameter("gain", "Gain", "Gain", gainRange, -10.0f, nullptr, nullptr);
     
-    
-    
+    NormalisableRange<float> lowCutRange(0.0f, 0.49f);
+    tree.createAndAddParameter("lowcut", "LowCut", "LowCut", lowCutRange, 0.0f, nullptr, nullptr);
     
     mojSynt.clearVoices();
     
@@ -146,6 +142,8 @@ void WojtekSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
     ignoreUnused(samplesPerBlock);
     lastSampleRate = sampleRate;
     mojSynt.setCurrentPlaybackSampleRate(lastSampleRate);
+    
+//    mojVoice->env2.wojtekSetSampleRate(&sampleRate);
 }
 
 void WojtekSynthAudioProcessor::releaseResources()
@@ -183,28 +181,30 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
     buffer.clear();
     
     mojSynt.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-    
-    for (int i = 0; i < mojSynt.getNumVoices(); i++)
-    {
-        if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
-        {            
-            mojVoice->setWAttack(tree.getRawParameterValue("attack"));
-            mojVoice->setWDecay(tree.getRawParameterValue("decay"));
-            mojVoice->setWSustain(tree.getRawParameterValue("sustain"));
-            mojVoice->setWRelease(tree.getRawParameterValue("release"));
-            
-            mojVoice->setMix(tree.getRawParameterValue("oscmix"));
-            
-            mojVoice->setWaveType1(tree.getRawParameterValue("wavetype1"));
-            mojVoice->setWaveType2(tree.getRawParameterValue("wavetype2"));
-            mojVoice->setWAttackShape(tree.getRawParameterValue("attackshape"));
-            mojVoice->setWDecayShape(tree.getRawParameterValue("decayshape"));
-            mojVoice->setWReleaseShape(tree.getRawParameterValue("releaseshape"));
-            
-            mojVoice->setWGain(tree.getRawParameterValue("gain"));
+
+    if (wParamIsChanged == true) {
+        for (int i = 0; i < mojSynt.getNumVoices(); i++)
+        {
+            if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
+            {
+                mojVoice->setWAttack(tree.getRawParameterValue("attack"));
+                mojVoice->setWDecay(tree.getRawParameterValue("decay"));
+                mojVoice->setWSustain(tree.getRawParameterValue("sustain"));
+                mojVoice->setWRelease(tree.getRawParameterValue("release"));
+                
+                mojVoice->setMix(tree.getRawParameterValue("oscmix"));
+                
+                mojVoice->setWaveType1(tree.getRawParameterValue("wavetype1"));
+                mojVoice->setWaveType2(tree.getRawParameterValue("wavetype2"));
+                mojVoice->setWAttackShape(tree.getRawParameterValue("attackshape"));
+                mojVoice->setWDecayShape(tree.getRawParameterValue("decayshape"));
+                mojVoice->setWReleaseShape(tree.getRawParameterValue("releaseshape"));
+                
+                mojVoice->setWGain(tree.getRawParameterValue("gain"));
+            }
         }
     }
-
+    if (wParamIsChanged != false) wParamIsChanged = false;
 }
 
 //==============================================================================

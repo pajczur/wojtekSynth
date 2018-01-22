@@ -15,32 +15,30 @@ class WojtekEnvelope
 public:
     WojtekEnvelope() {};
     ~WojtekEnvelope() {};
+//    void wojtekSetSampleRate (double *extSampleRate);
+    
     float wojtekADSR(float input, int trig);
     void setTrigger(int trig);
     int getTrigger() { return trigger; };
+    
     void wojtekSetAttack(float attackInMicroSec);
-    void wojtekSetDecay(float decayInMicroSec);
-    void wojtekSetSustain(float sus);
-    void wojtekSetRelease(float releaseInMicroSec);
-    
-    float wAmpLogDownDecay(float amp0to1, float sustain);
-    float wAmpExp(float amp0to1);
-    
     float wLogAttack(float amp0to1);
     void wLogAttackManip (float curve);
     
+    void wojtekSetDecay(float decayInMicroSec);
+    void wojtekSetSustain(float sus);
     float wLogDecay(float amp0to1);
     void wLogDecayManip (float curve);
     
+    void wojtekSetRelease(float releaseInMicroSec);
     float wLogRelease(float amp0to1);
     void wLogReleaseManip (float curve);
     
     void wojtekSetGain (float gain);
     
-    
 private:
+    double wSampleRate = 44100;
     int trigger = 0;
-    int wSampleRate = 44100;
     int wBufferSize=512;
     
     float wGain = 0.1;
@@ -65,7 +63,6 @@ private:
     
     float wRelease=1.0f;
     float fazaR = 0.0f;
-    float ampRelTemp;
     float wReleaseCurveParam=1.0f;
     float logAmpRelTemp;
 };

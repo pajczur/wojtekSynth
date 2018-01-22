@@ -25,8 +25,9 @@ processor(p)
     osc1Menu.addItem("phasor",   5);
     osc1Menu.addItem("noise",    6);
     osc1Menu.setJustificationType(Justification::centred);
-    setOsc1Attache = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "wavetype1", osc1Menu);
-    addAndMakeVisible(&osc1Menu);    
+    osc1Menu.addListener(this);
+//    setOsc1Attache = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "wavetype1", osc1Menu);
+    addAndMakeVisible(&osc1Menu);
 }
 
 WojtekSynthOsc1::~WojtekSynthOsc1()
@@ -42,4 +43,12 @@ void WojtekSynthOsc1::resized()
 {
 //    Rectangle<int> area = getLocalBounds().reduced(40);
     osc1Menu.setBounds(0, 0, 150, 35);
+}
+
+void WojtekSynthOsc1::comboBoxChanged (ComboBox *comboBoxThatHasChanged)
+{
+    if (comboBoxThatHasChanged == &osc1Menu) {
+        processor.wParamIsChanged = true;
+    }
+
 }

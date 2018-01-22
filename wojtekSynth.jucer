@@ -56,10 +56,6 @@
             file="Source/WojtekSynthOsc1.cpp"/>
       <FILE id="zI0ywB" name="WojtekSynthOsc1.h" compile="0" resource="0"
             file="Source/WojtekSynthOsc1.h"/>
-      <FILE id="qSpnl1" name="WojtekSynthOsc2.cpp" compile="1" resource="0"
-            file="Source/WojtekSynthOsc2.cpp"/>
-      <FILE id="CaTFlB" name="WojtekSynthOsc2.h" compile="0" resource="0"
-            file="Source/WojtekSynthOsc2.h"/>
       <FILE id="zKMbQi" name="WojtekSynthEnvelopeGraph.cpp" compile="1" resource="0"
             file="Source/WojtekSynthEnvelopeGraph.cpp"/>
       <FILE id="rXRrD9" name="WojtekSynthEnvelopeGraph.h" compile="0" resource="0"
