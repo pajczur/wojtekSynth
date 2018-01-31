@@ -12,7 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "WojtekSynthOsc1.h"
+#include "WojtekSynth_SetOsc.h"
 #include "WojtekSynthEnvelopeGraph.h"
 
 
@@ -60,8 +60,8 @@ private:
     Label releaseL;
     Label releaseSL;
     
-    WojtekSynthOsc1 setOsc1;
-    WojtekSynthOsc1 setOsc2;
+    WojtekSynth_SetOsc setOsc1;
+    WojtekSynth_SetOsc setOsc2;
     
     Slider oscMixSlider;
     Label osc1L;
@@ -70,7 +70,10 @@ private:
     
     WojtekSynthEnvelopeGraph envGraphWindow;
     
-    Slider lowCutSlider;
+    Slider lowCutSliderA1;
+    Slider lowCutSliderA0;
+    Label lowCutA1L;
+    Label lowCutA0L;
     
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> attackAttache;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> decayAttache;
@@ -86,7 +89,8 @@ private:
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc2Attache;
     
-    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> lowCutAttache;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> lowCutAttache_a1;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> lowCutAttache_a0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthAudioProcessorEditor)
 };

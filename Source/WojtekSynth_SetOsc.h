@@ -16,12 +16,12 @@
 //==============================================================================
 /*
 */
-class WojtekSynthOsc1    : public Component,
+class WojtekSynth_SetOsc    : public Component,
                            public ComboBox::Listener
 {
 public:
-    WojtekSynthOsc1(WojtekSynthAudioProcessor& p);
-    ~WojtekSynthOsc1();
+    WojtekSynth_SetOsc(WojtekSynthAudioProcessor& p);
+    ~WojtekSynth_SetOsc();
     
     void comboBoxChanged (ComboBox *comboBoxThatHasChanged) override;
 
@@ -34,5 +34,5 @@ private:
 //    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
     
     WojtekSynthAudioProcessor& processor;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthOsc1)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynth_SetOsc)
 };

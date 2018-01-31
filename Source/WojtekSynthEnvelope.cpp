@@ -13,7 +13,7 @@
 
 //=== E N V E L O P E === A D S R ==============================================
 
-float WojtekEnvelope::wojtekADSR(float input, int trig)
+float WojtekSynthEnvelope::wojtekADSR(float input, int trig)
 {
     if(wAttack==0) wAttack=1;
     if(wRelease==0) wRelease=1;
@@ -79,33 +79,25 @@ float WojtekEnvelope::wojtekADSR(float input, int trig)
         if (wAmplitude <= 0.0f) wAmplitude = 0.0f;
         
         return wLogRelease(wAmplitudeR) * logAmpRelTemp * wGain * input;
-//        return wAmpLogUP(wAmplitude) * input;
-//        return wAmpExp(wAmplitude) * input;
     }
 }
 
 
 //=== E X T E R N A L = S E T T I N G S ======================================
 
-void WojtekEnvelope::setTrigger(int trig)
+void WojtekSynthEnvelope::setTrigger(int trig)
 {
     trigger = trig;
 }
 
-//void WojtekEnvelope::wojtekSetSampleRate(double* extSampleRate)
-//{
-//    wSampleRate = *extSampleRate;
-//}
-
-
 //=== A T T A C K =============================================================
 
-void WojtekEnvelope::wojtekSetAttack(float attackInMicroSec)
+void WojtekSynthEnvelope::wojtekSetAttack(float attackInMicroSec)
 {
     wAttack = attackInMicroSec * ((float)wSampleRate/1000000.0f);
 }
 
-float WojtekEnvelope::wLogAttack(float amp0to1)
+float WojtekSynthEnvelope::wLogAttack(float amp0to1)
 {
     float amp;
     if(amp0to1>0 && amp0to1<1) {
@@ -117,7 +109,7 @@ float WojtekEnvelope::wLogAttack(float amp0to1)
     else return 0.0f;
 }
 
-void WojtekEnvelope::wLogAttackManip (float curve)
+void WojtekSynthEnvelope::wLogAttackManip (float curve)
 {
     if (curve>=0.000000001 && curve<=0.999999999) {
         wAttackCurveParam = curve;
@@ -130,12 +122,12 @@ void WojtekEnvelope::wLogAttackManip (float curve)
 
 //=== D E C A Y ===============================================================
 
-void WojtekEnvelope::wojtekSetDecay(float decayInMicroSec)
+void WojtekSynthEnvelope::wojtekSetDecay(float decayInMicroSec)
 {
     wDecay = decayInMicroSec * ((float)wSampleRate/1000000.0f);
 }
 
-void WojtekEnvelope::wojtekSetSustain(float sus)
+void WojtekSynthEnvelope::wojtekSetSustain(float sus)
 {
     if (sus>0 && sus<1) {
         wSustain = sus;
@@ -152,7 +144,7 @@ void WojtekEnvelope::wojtekSetSustain(float sus)
 //    } else wSustain = 0;
 }
 
-float WojtekEnvelope::wLogDecay(float amp0to1)
+float WojtekSynthEnvelope::wLogDecay(float amp0to1)
 {
     float amp;
     if(amp0to1>0 && amp0to1<1) {
@@ -164,7 +156,7 @@ float WojtekEnvelope::wLogDecay(float amp0to1)
     else return 0.0f;
 }
 
-void WojtekEnvelope::wLogDecayManip (float curve)
+void WojtekSynthEnvelope::wLogDecayManip (float curve)
 {
     if (curve>=0.000000001 && curve<=0.999999999) {
         wDecayCurveParam = curve;
@@ -178,12 +170,12 @@ void WojtekEnvelope::wLogDecayManip (float curve)
 
 //=== R E L E A S E =============================================================
 
-void WojtekEnvelope::wojtekSetRelease(float releaseInMicroSec)
+void WojtekSynthEnvelope::wojtekSetRelease(float releaseInMicroSec)
 {
     wRelease = releaseInMicroSec * ((float)wSampleRate/1000000.0f);
 }
 
-float WojtekEnvelope::wLogRelease(float amp0to1)
+float WojtekSynthEnvelope::wLogRelease(float amp0to1)
 {
     float amp;
     if(amp0to1>0 && amp0to1<1) {
@@ -195,7 +187,7 @@ float WojtekEnvelope::wLogRelease(float amp0to1)
     else return 0.0f;
 }
 
-void WojtekEnvelope::wLogReleaseManip (float curve)
+void WojtekSynthEnvelope::wLogReleaseManip (float curve)
 {
     if (curve>=0.000000001 && curve<=0.999999999) {
         wReleaseCurveParam = curve;
@@ -211,7 +203,7 @@ void WojtekEnvelope::wLogReleaseManip (float curve)
 
 
 //=== G A I N =================================================================
-void WojtekEnvelope::wojtekSetGain(float gain)
+void WojtekSynthEnvelope::wojtekSetGain(float gain)
 {
     if(gain>-65.0f) {
         wGain = pow(10.0f, gain/20.0f);

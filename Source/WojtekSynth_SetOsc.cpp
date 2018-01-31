@@ -9,11 +9,11 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "WojtekSynthOsc1.h"
+#include "WojtekSynth_SetOsc.h"
 
 
 //==============================================================================
-WojtekSynthOsc1::WojtekSynthOsc1(WojtekSynthAudioProcessor& p) :
+WojtekSynth_SetOsc::WojtekSynth_SetOsc(WojtekSynthAudioProcessor& p) :
 processor(p)
 {
     setSize(300, 35);
@@ -30,22 +30,22 @@ processor(p)
     addAndMakeVisible(&osc1Menu);
 }
 
-WojtekSynthOsc1::~WojtekSynthOsc1()
+WojtekSynth_SetOsc::~WojtekSynth_SetOsc()
 {
 }
 
-void WojtekSynthOsc1::paint (Graphics& g)
+void WojtekSynth_SetOsc::paint (Graphics& g)
 {
 
 }
 
-void WojtekSynthOsc1::resized()
+void WojtekSynth_SetOsc::resized()
 {
 //    Rectangle<int> area = getLocalBounds().reduced(40);
     osc1Menu.setBounds(0, 0, 150, 35);
 }
 
-void WojtekSynthOsc1::comboBoxChanged (ComboBox *comboBoxThatHasChanged)
+void WojtekSynth_SetOsc::comboBoxChanged (ComboBox *comboBoxThatHasChanged)
 {
     if (comboBoxThatHasChanged == &osc1Menu) {
         processor.wParamIsChanged = true;

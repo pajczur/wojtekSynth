@@ -10,12 +10,11 @@
 
 #pragma once
 
-class WojtekEnvelope
+class WojtekSynthEnvelope
 {
 public:
-    WojtekEnvelope() {};
-    ~WojtekEnvelope() {};
-//    void wojtekSetSampleRate (double *extSampleRate);
+    WojtekSynthEnvelope() {};
+    ~WojtekSynthEnvelope() {};
     
     float wojtekADSR(float input, int trig);
     void setTrigger(int trig);
@@ -36,8 +35,9 @@ public:
     
     void wojtekSetGain (float gain);
     
+    double wSampleRate;
 private:
-    double wSampleRate = 44100;
+//    double wSampleRate = 44100;
     int trigger = 0;
     int wBufferSize=512;
     

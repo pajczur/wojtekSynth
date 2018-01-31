@@ -25,7 +25,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
-    WojtekEnvelope adsrGraph;
+    WojtekSynthEnvelope adsrGraph;
     Path attackPath;
     Path jointPathA;
     
