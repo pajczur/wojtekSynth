@@ -36,8 +36,9 @@ public:
     
     void wojtekSetGain (float gain);
     
+    double wSampleRate;
 private:
-    double wSampleRate = 44100;
+//    double wSampleRate = 44100;
     int trigger = 0;
     int wBufferSize=512;
     

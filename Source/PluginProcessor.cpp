@@ -56,8 +56,11 @@ tree(*this, nullptr)
     NormalisableRange<float> gainRange(-66.0f, 0.0f);
     tree.createAndAddParameter("gain", "Gain", "Gain", gainRange, -10.0f, nullptr, nullptr);
     
-    NormalisableRange<float> lowCutRange(0.0f, 0.49f);
-    tree.createAndAddParameter("lowcut", "LowCut", "LowCut", lowCutRange, 0.0f, nullptr, nullptr);
+    NormalisableRange<float> lowCutRange_a1(-1.0f, 1.0f);
+    tree.createAndAddParameter("lowcut_a1", "LowCut_a1", "LowCut_a1", lowCutRange_a1, 1.0f, nullptr, nullptr);
+    
+    NormalisableRange<float> lowCutRange_a0(-1.0f, 1.0f);
+    tree.createAndAddParameter("lowcut_a0", "LowCut_a0", "LowCut_a0", lowCutRange_a0, 0.0f, nullptr, nullptr);
     
     mojSynt.clearVoices();
     
@@ -142,8 +145,16 @@ void WojtekSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
     ignoreUnused(samplesPerBlock);
     lastSampleRate = sampleRate;
     mojSynt.setCurrentPlaybackSampleRate(lastSampleRate);
+
+    for (int i = 0; i < mojSynt.getNumVoices(); i++)
+    {
+        if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
+        {
+            mojVoice->wojtekSetSampleRate(sampleRate);
+            
+        }
+    }
     
-//    mojVoice->env2.wojtekSetSampleRate(&sampleRate);
 }
 
 void WojtekSynthAudioProcessor::releaseResources()
@@ -187,6 +198,10 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
         {
             if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
             {
+               
+                mojVoice->feedForward_Filter_a1(tree.getRawParameterValue("lowcut_a1"));
+                mojVoice->feedForward_Filter_a0(tree.getRawParameterValue("lowcut_a0"));
+                
                 mojVoice->setWAttack(tree.getRawParameterValue("attack"));
                 mojVoice->setWDecay(tree.getRawParameterValue("decay"));
                 mojVoice->setWSustain(tree.getRawParameterValue("sustain"));

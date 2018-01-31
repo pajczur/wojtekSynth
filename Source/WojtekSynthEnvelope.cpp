@@ -79,8 +79,6 @@ float WojtekSynthEnvelope::wojtekADSR(float input, int trig)
         if (wAmplitude <= 0.0f) wAmplitude = 0.0f;
         
         return wLogRelease(wAmplitudeR) * logAmpRelTemp * wGain * input;
-//        return wAmpLogUP(wAmplitude) * input;
-//        return wAmpExp(wAmplitude) * input;
     }
 }
 
@@ -91,12 +89,6 @@ void WojtekSynthEnvelope::setTrigger(int trig)
 {
     trigger = trig;
 }
-
-//void WojtekEnvelope::wojtekSetSampleRate(double* extSampleRate)
-//{
-//    wSampleRate = *extSampleRate;
-//}
-
 
 //=== A T T A C K =============================================================
 
