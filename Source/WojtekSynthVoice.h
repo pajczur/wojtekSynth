@@ -239,8 +239,20 @@ private:
     int theWaveType2;
     double osc1Mix;
     double osc2Mix;
+    WojtekSynthEnvelope wVoiceEnv;
+    double wVoiceLevel;
+    double wVoicePitch;
+    double wVoiceFreq;
+    int wVoiceWaveType1;
+    int wVoiceWaveType2;
+    double wVoiceOsc1Mix;
+    double wVoiceOsc2Mix;
+    
+    float a0_left;
+    float a1_left;
+    
+    float z1_left;
 
-    maxiOsc osc1;
-    maxiOsc osc2;
-    int dupa = 0;
+    maxiOsc mOsc1;
+    maxiOsc mOsc2;
 };
