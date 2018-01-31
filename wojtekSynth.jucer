@@ -52,10 +52,10 @@
             file="Source/WojtekSynthEnvelope.cpp"/>
       <FILE id="UhxJG5" name="WojtekSynthEnvelope.h" compile="0" resource="0"
             file="Source/WojtekSynthEnvelope.h"/>
-      <FILE id="UBVXJq" name="WojtekSynthOsc1.cpp" compile="1" resource="0"
-            file="Source/WojtekSynthOsc1.cpp"/>
-      <FILE id="zI0ywB" name="WojtekSynthOsc1.h" compile="0" resource="0"
-            file="Source/WojtekSynthOsc1.h"/>
+      <FILE id="UBVXJq" name="WojtekSynth_SetOsc.cpp" compile="1" resource="0"
+            file="Source/WojtekSynth_SetOsc.cpp"/>
+      <FILE id="zI0ywB" name="WojtekSynth_SetOsc.h" compile="0" resource="0"
+            file="Source/WojtekSynth_SetOsc.h"/>
       <FILE id="zKMbQi" name="WojtekSynthEnvelopeGraph.cpp" compile="1" resource="0"
             file="Source/WojtekSynthEnvelopeGraph.cpp"/>
       <FILE id="rXRrD9" name="WojtekSynthEnvelopeGraph.h" compile="0" resource="0"
