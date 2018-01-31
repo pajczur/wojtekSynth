@@ -10,11 +10,11 @@
 
 #pragma once
 
-class WojtekEnvelope
+class WojtekSynthEnvelope
 {
 public:
-    WojtekEnvelope() {};
-    ~WojtekEnvelope() {};
+    WojtekSynthEnvelope() {};
+    ~WojtekSynthEnvelope() {};
 //    void wojtekSetSampleRate (double *extSampleRate);
     
     float wojtekADSR(float input, int trig);

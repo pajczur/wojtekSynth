@@ -12,7 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "WojtekSynthOsc1.h"
+#include "WojtekSynth_SetOsc.h"
 #include "WojtekSynthEnvelopeGraph.h"
 
 
@@ -60,8 +60,8 @@ private:
     Label releaseL;
     Label releaseSL;
     
-    WojtekSynthOsc1 setOsc1;
-    WojtekSynthOsc1 setOsc2;
+    WojtekSynth_SetOsc setOsc1;
+    WojtekSynth_SetOsc setOsc2;
     
     Slider oscMixSlider;
     Label osc1L;

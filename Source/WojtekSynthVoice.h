@@ -179,9 +179,9 @@ public:
     
     //==============================================================================
     
-    WojtekEnvelope env2;
 
 private:
+    WojtekSynthEnvelope env2;
     double extSampRat;
     double level;
     double frequency;
