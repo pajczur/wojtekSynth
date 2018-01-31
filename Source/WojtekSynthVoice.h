@@ -231,7 +231,6 @@ public:
     
 
 private:
-    WojtekSynthEnvelope env2;
     double extSampRat;
     double level;
     double frequency;
