@@ -62,6 +62,7 @@ private:
     
     WojtekSynth_SetOsc setOsc1;
     WojtekSynth_SetOsc setOsc2;
+    Slider setOsc2Pitch;
     
     Slider oscMixSlider;
     Label osc1L;
@@ -88,6 +89,7 @@ private:
     
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc2Attache;
+    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> osc2PitchAttache;
     
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> lowCutAttache_a1;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> lowCutAttache_a0;

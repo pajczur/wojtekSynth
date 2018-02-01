@@ -34,6 +34,12 @@ WojtekSynth_SetOsc::~WojtekSynth_SetOsc()
 {
 }
 
+void WojtekSynth_SetOsc::setMenuBounds(int _X, int _Y)
+{
+    oscMenuBoundX = _X;
+    oscMenuBoundY = _Y;
+}
+
 void WojtekSynth_SetOsc::paint (Graphics& g)
 {
 
@@ -42,7 +48,7 @@ void WojtekSynth_SetOsc::paint (Graphics& g)
 void WojtekSynth_SetOsc::resized()
 {
 //    Rectangle<int> area = getLocalBounds().reduced(40);
-    osc1Menu.setBounds(0, 0, 150, 35);
+    osc1Menu.setBounds(0, 0, oscMenuBoundX, oscMenuBoundY);
 }
 
 void WojtekSynth_SetOsc::comboBoxChanged (ComboBox *comboBoxThatHasChanged)

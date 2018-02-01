@@ -168,6 +168,13 @@ WojtekSynthAudioProcessorEditor::WojtekSynthAudioProcessorEditor (WojtekSynthAud
     addAndMakeVisible(&lowCutSliderA0);
     lowCutAttache_a0 = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "lowcut_a0", lowCutSliderA0);
     
+    setOsc2Pitch.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    setOsc2Pitch.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 25);
+    setOsc2Pitch.setRange(440.0/466.16377, 466.16377/440.0);
+    setOsc2Pitch.addListener(this);
+    addAndMakeVisible(&setOsc2Pitch);
+    osc2PitchAttache = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "osc2pitch", setOsc2Pitch);
+    
 }
 
 WojtekSynthAudioProcessorEditor::~WojtekSynthAudioProcessorEditor()
@@ -197,9 +204,12 @@ void WojtekSynthAudioProcessorEditor::resized()
     decayShape.setBounds(530, 250, 75, 70);
     releaseShape.setBounds(640, 250, 75, 70);
     
-    setOsc1.setBounds(350+((350-200)/2)-3, 440, 150, 35);
-    setOsc2.setBounds(500+((350-200)/2)-3, 440, 150, 35);
-    oscMixSlider.setBounds(417, 325+65, 310, 50);
+    setOsc1.setMenuBounds(150, 35);
+    setOsc2.setMenuBounds(100, 35);
+    setOsc1.setBounds(350+((350-200)/2)-3, 440-20, setOsc1.oscMenuBoundX, setOsc1.oscMenuBoundY);
+    setOsc2.setBounds(500+((350-200)/2)-3, 440-20, setOsc2.oscMenuBoundX, setOsc2.oscMenuBoundY);
+    setOsc2Pitch.setBounds(600+((350-200)/2)-3, 410, 80, 80);
+    oscMixSlider.setBounds(417, 325+65-20, 310, 50);
     
     gainSlider.setBounds(50, 400, 70, 70);
     envGraphWindow.setBounds(400, 25, envGraphWindow.getWidth(), envGraphWindow.getHeight());
@@ -234,7 +244,7 @@ void WojtekSynthAudioProcessorEditor::sliderValueChanged (Slider *slider)
         processor.wParamIsChanged = true;
     }
     
-    if(slider == &oscMixSlider || slider == &gainSlider || slider == &lowCutSliderA1 || slider == &lowCutSliderA0) {
+    if(slider == &oscMixSlider || slider == &gainSlider || slider == &lowCutSliderA1 || slider == &lowCutSliderA0 || slider == &setOsc2Pitch) {
         processor.wParamIsChanged = true;
     }
 }

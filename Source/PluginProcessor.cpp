@@ -62,6 +62,9 @@ tree(*this, nullptr)
     NormalisableRange<float> lowCutRange_a0(-1.0f, 1.0f);
     tree.createAndAddParameter("lowcut_a0", "LowCut_a0", "LowCut_a0", lowCutRange_a0, 0.0f, nullptr, nullptr);
     
+    NormalisableRange<float> osc2PitchRange(440.0f/466.16377f, 466.16377f/440.0f);
+    tree.createAndAddParameter("osc2pitch", "Osc2Pitch", "Osc2Pitch", osc2PitchRange, 1.0f, nullptr, nullptr);
+    
     mojSynt.clearVoices();
     
     for (int i=0; i < 20; i++)
@@ -198,6 +201,7 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
         {
             if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
             {
+                mojVoice->wSetOsc2Pitch(tree.getRawParameterValue("osc2pitch"));
                
                 mojVoice->feedForward_Filter_a1(tree.getRawParameterValue("lowcut_a1"));
                 mojVoice->feedForward_Filter_a0(tree.getRawParameterValue("lowcut_a0"));
@@ -207,7 +211,7 @@ void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuf
                 mojVoice->setWSustain(tree.getRawParameterValue("sustain"));
                 mojVoice->setWRelease(tree.getRawParameterValue("release"));
                 
-                mojVoice->setMix(tree.getRawParameterValue("oscmix"));
+                mojVoice->wSetOscMix(tree.getRawParameterValue("oscmix"));
                 
                 mojVoice->setWaveType1(tree.getRawParameterValue("wavetype1"));
                 mojVoice->setWaveType2(tree.getRawParameterValue("wavetype2"));

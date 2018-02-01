@@ -24,11 +24,14 @@ public:
     ~WojtekSynth_SetOsc();
     
     void comboBoxChanged (ComboBox *comboBoxThatHasChanged) override;
+    void setMenuBounds (int _X, int _Y);
 
     void paint (Graphics&) override;
     void resized() override;
 
     ComboBox osc1Menu;
+    int oscMenuBoundX;
+    int oscMenuBoundY;
 private:
  
 //    ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> setOsc1Attache;

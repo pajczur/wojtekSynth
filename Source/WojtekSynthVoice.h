@@ -25,8 +25,65 @@ public:
     void wojtekSetSampleRate (double extSampleRate)
     {
         wVoiceEnv.wSampleRate = extSampleRate;
-//        dupa = extSampleRate;
+        wPitchEnv.wSampleRate = extSampleRate;
     }
+    
+    //=== S E M I == T O N E S == O S C == 2 =====================================
+    void wSetOsc2Pitch (float* wPitch)
+    {
+        wOsc2Pitch = 1 * ( *wPitch );
+    }
+    
+    
+    
+    
+    //=== P I T C H == B A N D == E N V E L O P E R ==============================
+//    void wSetVoicePitchBand (double* wPitch)
+//    {
+//        wVoicePitch = *wPitch;
+//    }
+//
+//    //===  P I T C H == A T T A C K ===
+//    void setPitchAttack (float* atak)
+//    {
+//        wPitchEnv.wojtekSetAttack(*atak);
+//    }
+//
+//    void setPitchAttackShape(float* curveParam)
+//    {
+//        wPitchEnv.wLogAttackManip(*curveParam);
+//    }
+//
+//    //===  P I T C H == D E C A Y ===
+//
+//
+//    void setPitchDecay (float* decay)
+//    {
+//        wPitchEnv.wojtekSetDecay(*decay);
+//    }
+//
+//    void setPitchSustain (float* sustain)
+//    {
+//        wPitchEnv.wojtekSetSustain(*sustain);
+//    }
+//
+//    void setPitchDecayShape(float* curveParam)
+//    {
+//        wPitchEnv.wLogDecayManip(*curveParam);
+//    }
+//
+//    //===  P I T C H == R E L E A S E ===
+//
+//    void setPitchRelease (float* release)
+//    {
+//        wPitchEnv.wojtekSetRelease(*release);
+//    }
+//
+//    void setPitchReleaseShape(float* curveParam)
+//    {
+//        wPitchEnv.wLogReleaseManip(*curveParam);
+//    }
+    
 
     
     //===  S E T == A D S R == E N V E L O P E ====================================
@@ -76,7 +133,7 @@ public:
     
     //=== O S C I L L A T O R S =====================================================
     //===  M I X E R ===
-    void setMix (float* mix)
+    void wSetOscMix (float* mix)
     {
         if (*mix>=(-1) && *mix<=1) {
             wVoiceOsc1Mix = 1 - (1 + *mix)/2;
@@ -117,11 +174,11 @@ public:
     
     double oscWaveType2()
     {
-        if (wVoiceWaveType2 == 0) return (double)wVoiceOsc2Mix*mOsc2.sinewave(wVoiceFreq);
-        if (wVoiceWaveType2 == 1) return (double)wVoiceOsc2Mix*mOsc2.saw(wVoiceFreq);
-        if (wVoiceWaveType2 == 2) return (double)wVoiceOsc2Mix*mOsc2.square(wVoiceFreq);
-        if (wVoiceWaveType2 == 3) return (double)wVoiceOsc2Mix*mOsc2.triangle(wVoiceFreq);
-        if (wVoiceWaveType2 == 4) return (double)wVoiceOsc2Mix*mOsc2.phasor(wVoiceFreq);
+        if (wVoiceWaveType2 == 0) return (double)wVoiceOsc2Mix*mOsc2.sinewave(wVoiceFreq * wOsc2Pitch);
+        if (wVoiceWaveType2 == 1) return (double)wVoiceOsc2Mix*mOsc2.saw(wVoiceFreq * wOsc2Pitch);
+        if (wVoiceWaveType2 == 2) return (double)wVoiceOsc2Mix*mOsc2.square(wVoiceFreq * wOsc2Pitch);
+        if (wVoiceWaveType2 == 3) return (double)wVoiceOsc2Mix*mOsc2.triangle(wVoiceFreq * wOsc2Pitch);
+        if (wVoiceWaveType2 == 4) return (double)wVoiceOsc2Mix*mOsc2.phasor(wVoiceFreq * wOsc2Pitch);
         if (wVoiceWaveType2 == 5) return (double)wVoiceOsc2Mix*mOsc2.noise();
         
         else return 0.0f;
@@ -232,8 +289,10 @@ public:
 
 private:
     WojtekSynthEnvelope wVoiceEnv;
+    WojtekSynthEnvelope wPitchEnv;
     double wVoiceLevel;
     double wVoicePitch;
+    double wOsc2Pitch;
     double wVoiceFreq;
     int wVoiceWaveType1;
     int wVoiceWaveType2;
