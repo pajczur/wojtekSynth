@@ -19,11 +19,15 @@
 class WojtekSynthEnvelopeGraph    : public Component
 {
 public:
-    WojtekSynthEnvelopeGraph();
+    WojtekSynthEnvelopeGraph(int wColor);
     ~WojtekSynthEnvelopeGraph();
 
     void paint (Graphics&) override;
     void resized() override;
+    
+    void drawAttack(double attSliderValue, double attSliderMax, double attShapeSliderValue, double dGain);
+    void drawDecay(double decSliderValue, double decSliderMax, double decShapeSliderValue, double susSliderValue, double dGain);
+    void drawRelease(double relSliderValue, double relSliderMax, double relShapeSliderValue, double susSliderValue, double dGain);
 
     WojtekSynthEnvelope adsrGraph;
     Path attackPath;
