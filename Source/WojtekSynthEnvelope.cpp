@@ -23,27 +23,44 @@ float WojtekSynthEnvelope::wojtekADSR(float input, int trig)
         
         // ===== ATTACK ====================================
         if (fazaA<wAttack && wAmplitude<=1 && wAttackTrig==1) {
+            
+            if(relAttTrig == 1) {
+                fazaRR--;
+                wAmplitudeR -= wAmplitudeRt / 50.0f;
+                if (wAmplitude != 0) wAmplitude = 0;
+                if (fazaRR <= 0) relAttTrig = 0;
+                
+                return wLogRelease(wAmplitudeR) * logAmpRelTemp * wGain * input;
+            }
+            else {
             wAmplitude += 1.0f/wAttack;
             fazaA++;
-            
+            fazaATemp = fazaA;
+            if(wAmplitude>1) wAmplitude=1.0f;
             if(fazaD != 0) fazaD = 0;
             if(fazaR != 0) fazaR = 0;
             
             if (wAmplitudeR != 1.0f) wAmplitudeR = 1.0f;
             logAmpRelTemp = wLogAttack(wAmplitude);
-
+            
             return wLogAttack(wAmplitude) * wGain * input;
+            }
         } else {
         
         // ===== DECAY & SUSTAIN ===========================
             
             if (wAttackTrig == 1) wAttackTrig = 0;
             
-            if (fazaD < wDecay ) {
+            if (fazaD < wDecay && wDecay > 0.0f) {
                 wAmplitude -= 1.0f/wDecay;
+                if(wAmplitude <= 0.0f) wAmplitude=0.0f;
                 fazaD++;
 
                 if(fazaA != 0) fazaA = 0;
+//                fazaA -= fazaATemp/wDecay;
+//                if (fazaA < 0) fazaA = 0;
+                
+                
                 if(fazaR != 0) fazaR = 0;
                 
                 if (wAmplitudeR != 1.0f) wAmplitudeR = 1.0f;
@@ -51,7 +68,7 @@ float WojtekSynthEnvelope::wojtekADSR(float input, int trig)
 
                 return (1.0f - (1.0f-wSustain)*(1.0f-wLogDecay(wAmplitude))) * wGain * input;
             } else {
-                if (logAmpRelTemp != wLogDecay(wSustain)) logAmpRelTemp = wLogDecay(wSustain);
+                if (logAmpRelTemp != wSustain) logAmpRelTemp = wSustain;
                 if (wAmplitudeR != 1.0f) wAmplitudeR = 1.0f;
                 
                 if(fazaA != 0) fazaA = 0;
@@ -67,14 +84,24 @@ float WojtekSynthEnvelope::wojtekADSR(float input, int trig)
         if (wAttackTrig == 0) { wAttackTrig=1; }
         if (fazaR<wRelease && wAmplitudeR>0) {
             wAmplitudeR -= 1.0f/wRelease;
-            wAmplitude = wAmplitudeR;
+//            wAmplitude = wAmplitudeR;
+//            if(wAmplitude != 1) wAmplitude = 1;
             
             if(fazaA != 0) fazaA = 0;
+//            fazaA -= fazaATemp/wRelease;
+//            if (fazaA < 0) fazaA = 0;
+            wAmplitudeRt = wAmplitudeR;
+            if(relAttTrig == 0) {
+                relAttTrig = 1;
+                fazaRR = 50.0f;
+                wAmplitude = 1.0f;
+            }
             fazaR++;
         } else {
             if(fazaA != 0) fazaA = 0;
             wAmplitude = 0;
             wAmplitudeR = 0;
+            relAttTrig = 0;
         }
         if (wAmplitude <= 0.0f) wAmplitude = 0.0f;
         
@@ -209,5 +236,16 @@ void WojtekSynthEnvelope::wojtekSetGain(float gain)
         wGain = pow(10.0f, gain/20.0f);
     } else {
         wGain = pow(10.0f, -65.0f/20.0f)*(gain + 66.0f);
+    }
+}
+
+void WojtekSynthEnvelope::wojtekSetLinearGain(float gain)
+{
+    if(gain>=-1.0f && gain<=1.0f) {
+        wGain = gain;
+    } else if (gain<-1.0f) {
+        wGain = -1.0f;
+    } else {
+        wGain = 1.0f;
     }
 }
