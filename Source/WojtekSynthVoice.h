@@ -25,11 +25,93 @@ public:
     void wojtekSetSampleRate (double extSampleRate)
     {
         wVoiceEnv.wSampleRate = extSampleRate;
-//        dupa = extSampleRate;
+        wEnvelope_2.wSampleRate = extSampleRate;
     }
+    
+    int wSetPoly (int voicesQ)
+    {
+        return voicesQ;
+    }
+    
+    
+    //=== W A V E == O S C I L L A T O R == 1 ===
+    void setWaveType1 (float* waveType)
+    {
+        wVoiceWaveType1 = *waveType;
+    }
+    
+    double oscWaveType1()
+    {
+        
+        
+        if (wVoiceWaveType1 == 0) return (double)wVoiceOsc1Mix*mOsc1.sinewave(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType1 == 1) return (double)wVoiceOsc1Mix*mOsc1.saw(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType1 == 2) return (double)wVoiceOsc1Mix*mOsc1.square(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType1 == 3) return (double)wVoiceOsc1Mix*mOsc1.triangle(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType1 == 4) return (double)wVoiceOsc1Mix*mOsc1.phasor(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType1 == 5) return (double)wVoiceOsc1Mix*mOsc1.noise();
+        
+        else return 0.0f;
+    }
+    
+    
+    //=== W A V E == O S C I L L A T O R == 2 ===
+    void setWaveType2 (float* waveType)
+    {
+        wVoiceWaveType2 = *waveType;
+    }
+    
+    double oscWaveType2()
+    {
+        
+        if (wVoiceWaveType2 == 0) return (double)wVoiceOsc2Mix*mOsc2.sinewave(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType2 == 1) return (double)wVoiceOsc2Mix*mOsc2.saw(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType2 == 2) return (double)wVoiceOsc2Mix*mOsc2.square(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType2 == 3) return (double)wVoiceOsc2Mix*mOsc2.triangle(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType2 == 4) return (double)wVoiceOsc2Mix*mOsc2.phasor(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
+        if (wVoiceWaveType2 == 5) return (double)wVoiceOsc2Mix*mOsc2.noise();
+        
+        else return 0.0f;
+    }
+    
+    
+    //=== O S C I L L A T O R S =====================================================
+    //===  M I X E R ===
+    void wSetOscMix (float* mix)
+    {
+        if (*mix>=(-1) && *mix<=1) {
+            wVoiceOsc1Mix = 1 - (1 + *mix)/2;
+            wVoiceOsc2Mix = 1 + (*mix - 1)/2;
+        } else if (*mix<(-1)) {
+            wVoiceOsc1Mix = 1;
+            wVoiceOsc2Mix = 0;
+        } else {
+            wVoiceOsc1Mix = 0;
+            wVoiceOsc2Mix = 1;
+        }
+    }
+    
+    
+    
+    
+    //== O S C == 2 == S E M I == P I T C H ========================================
+    void wSetOsc2Pitch (float* wPitch)
+    {
+
+//        wOsc2Pitch = 1 * pow(466.16377/440.0, *wPitch);
+        
+        if(*wPitch >= 0) {
+            wOsc2Pitch = 1.0 + (3.0 * *wPitch);
+        } else {
+            wOsc2Pitch = 1.0 + (0.75 * *wPitch);
+        }
+    }
+    
+    
+    
 
     
-    //===  S E T == A D S R == E N V E L O P E ====================================
+    //===  S E T == V O I C E == E N V E L O P E ====================================
     //===  A T T A C K ===
     
     void setWAttack (float* atak)
@@ -73,59 +155,55 @@ public:
     }
     
     
-    
-    //=== O S C I L L A T O R S =====================================================
-    //===  M I X E R ===
-    void setMix (float* mix)
+    //===  S E T == E N V E L O P E == 2 ==================================
+    //=== A T T A C K == _2 ===
+    void setWAttack_2 (float* atak)
     {
-        if (*mix>=(-1) && *mix<=1) {
-            wVoiceOsc1Mix = 1 - (1 + *mix)/2;
-            wVoiceOsc2Mix = 1 + (*mix - 1)/2;
-        } else if (*mix<(-1)) {
-            wVoiceOsc1Mix = 1;
-            wVoiceOsc2Mix = 0;
-        } else {
-            wVoiceOsc1Mix = 0;
-            wVoiceOsc2Mix = 1;
-        }
+        wEnvelope_2.wojtekSetAttack(*atak);
+    }
+
+    void setWAttackShape_2(float* curveParam)
+    {
+        wEnvelope_2.wLogAttackManip(*curveParam);
+    }
+
+    //=== D E C A Y == _2 ===
+    void setWDecay_2 (float* decay)
+    {
+        wEnvelope_2.wojtekSetDecay(*decay);
+    }
+
+    void setWSustain_2 (float* sustain)
+    {
+        wEnvelope_2.wojtekSetSustain(*sustain);
+    }
+
+    void setWDecayShape_2(float* curveParam)
+    {
+        wEnvelope_2.wLogDecayManip(*curveParam);
+    }
+
+    //=== R E L E A S E == _2 ===
+
+    void setWRelease_2 (float* release)
+    {
+        wEnvelope_2.wojtekSetRelease(*release);
+    }
+
+    void setWReleaseShape_2(float* curveParam)
+    {
+        wEnvelope_2.wLogReleaseManip(*curveParam);
     }
     
-    //=== W A V E == O S C I L L A T O R == 1 ===
-    void setWaveType1 (float* waveType)
+    void setWEnv_2Amount (float* gain)
     {
-        wVoiceWaveType1 = *waveType;
-    }
-    
-    double oscWaveType1()
-    {
-        if (wVoiceWaveType1 == 0) return (double)wVoiceOsc1Mix*mOsc1.sinewave(wVoiceFreq);
-        if (wVoiceWaveType1 == 1) return (double)wVoiceOsc1Mix*mOsc1.saw(wVoiceFreq);
-        if (wVoiceWaveType1 == 2) return (double)wVoiceOsc1Mix*mOsc1.square(wVoiceFreq);
-        if (wVoiceWaveType1 == 3) return (double)wVoiceOsc1Mix*mOsc1.triangle(wVoiceFreq);
-        if (wVoiceWaveType1 == 4) return (double)wVoiceOsc1Mix*mOsc1.phasor(wVoiceFreq);
-        if (wVoiceWaveType1 == 5) return (double)wVoiceOsc1Mix*mOsc1.noise();
-        
-        else return 0.0f;
+        wEnvelope_2.wojtekSetLinearGain(*gain);
     }
     
     
-    //=== W A V E == O S C I L L A T O R == 2 ===
-    void setWaveType2 (float* waveType)
-    {
-        wVoiceWaveType2 = *waveType;
-    }
+
     
-    double oscWaveType2()
-    {
-        if (wVoiceWaveType2 == 0) return (double)wVoiceOsc2Mix*mOsc2.sinewave(wVoiceFreq);
-        if (wVoiceWaveType2 == 1) return (double)wVoiceOsc2Mix*mOsc2.saw(wVoiceFreq);
-        if (wVoiceWaveType2 == 2) return (double)wVoiceOsc2Mix*mOsc2.square(wVoiceFreq);
-        if (wVoiceWaveType2 == 3) return (double)wVoiceOsc2Mix*mOsc2.triangle(wVoiceFreq);
-        if (wVoiceWaveType2 == 4) return (double)wVoiceOsc2Mix*mOsc2.phasor(wVoiceFreq);
-        if (wVoiceWaveType2 == 5) return (double)wVoiceOsc2Mix*mOsc2.noise();
-        
-        else return 0.0f;
-    }
+
     
     
     //==== G A I N =================================================================
@@ -192,6 +270,8 @@ public:
         
         for (int sample=0; sample < numSamples; ++sample)
         {
+            wojtekEnvelope_2 = wEnvelope_2.wojtekADSR(1.0f, wVoiceEnv.getTrigger());
+
             float wojtekSound = wVoiceEnv.wojtekADSR((float)oscWaveType1()+(float)oscWaveType2(), wVoiceEnv.getTrigger());
             float xn_left = wojtekSound;
             
@@ -239,8 +319,12 @@ private:
     double osc1Mix;
     double osc2Mix;
     WojtekSynthEnvelope wVoiceEnv;
+    WojtekSynthEnvelope wEnvelope_2;
+    float wojtekEnvelope_2;
+    
     double wVoiceLevel;
     double wVoicePitch;
+    double wOsc2Pitch;
     double wVoiceFreq;
     int wVoiceWaveType1;
     int wVoiceWaveType2;

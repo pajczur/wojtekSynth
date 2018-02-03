@@ -35,18 +35,20 @@ public:
     void wLogReleaseManip (float curve);
     
     void wojtekSetGain (float gain);
+    void wojtekSetLinearGain (float gain);
     
     double wSampleRate;
+    float wGain = 0.1;
+    float wAmplitude;
 private:
 //    double wSampleRate = 44100;
     int trigger = 0;
     int wBufferSize=512;
     
-    float wGain = 0.1;
     
     float wInput;
-    float wAmplitude;
     float wAmplitudeR;
+    float wAmplitudeRt;
     float amplitudaD;
     float ConstAmplitudaA;
     float ConstAmplitudaR;
@@ -54,6 +56,7 @@ private:
     
     float wAttack=1.0f;
     float fazaA=0.0f;
+    float fazaATemp;
     int wAttackTrig=1;
     float wAttackCurveParam=0.55f;
     
@@ -66,4 +69,6 @@ private:
     float fazaR = 0.0f;
     float wReleaseCurveParam=1.0f;
     float logAmpRelTemp;
+    int relAttTrig=0;
+    float fazaRR;
 };

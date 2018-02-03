@@ -37,6 +37,7 @@ public:
     
     float startPointX = 10.0f;
     float startPointY = 190.0f;
+    int wBackgroundColour;
 private:
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WojtekSynthEnvelopeGraph)

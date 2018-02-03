@@ -58,6 +58,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void setPolyphonic (int);
     
     AudioProcessorValueTreeState tree;
 
