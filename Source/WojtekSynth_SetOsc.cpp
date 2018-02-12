@@ -24,6 +24,7 @@ processor(p)
     osc1Menu.addItem("triangle", 4);
     osc1Menu.addItem("phasor",   5);
     osc1Menu.addItem("noise",    6);
+    osc1Menu.addItem("impuls",   7);
     osc1Menu.setJustificationType(Justification::centred);
     osc1Menu.addListener(this);
 //    setOsc1Attache = new AudioProcessorValueTreeState::ComboBoxAttachment(processor.tree, "wavetype1", osc1Menu);

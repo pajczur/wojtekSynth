@@ -10,7 +10,7 @@
               pluginChannelConfigs="" pluginIsSynth="1" pluginWantsMidiIn="1"
               pluginProducesMidiOut="1" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="wojtekSynthAU" pluginRTASCategory="" aaxIdentifier="com.yourcompany.wojtekSynth"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.2.0"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.2.1"
               companyName="Wojtek">
   <MAINGROUP id="pIgX2G" name="wojtekSynth">
     <GROUP id="{BAB27BFE-482F-8226-1386-1CABD50B3A0E}" name="Source">

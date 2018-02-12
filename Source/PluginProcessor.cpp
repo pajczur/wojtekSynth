@@ -29,7 +29,7 @@ tree(*this, nullptr)
     tree.createAndAddParameter("polyvoices", "PolyVoices", "PolyVoices", polyVoicesRange, 1.0f, nullptr, nullptr);
     
     //== O S C I L L A T O R == M I X E R ==
-    NormalisableRange<float> oscChoices(0, 5);
+    NormalisableRange<float> oscChoices(0, 6);
     tree.createAndAddParameter("wavetype1", "WaveType1", "WaveTypes1", oscChoices, 0, nullptr, nullptr);
     tree.createAndAddParameter("wavetype2", "WaveType2", "WaveTypes2", oscChoices, 1, nullptr, nullptr);
  
@@ -199,13 +199,13 @@ void WojtekSynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
     ignoreUnused(samplesPerBlock);
     lastSampleRate = sampleRate;
     mojSynt.setCurrentPlaybackSampleRate(lastSampleRate);
+    mojVoice->wBufferSize = samplesPerBlock;
 
     for (int i = 0; i < mojSynt.getNumVoices(); i++)
     {
         if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
         {
             mojVoice->wojtekSetSampleRate(sampleRate);
-            
         }
     }
     
@@ -243,6 +243,8 @@ bool WojtekSynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 
 void WojtekSynthAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    if(mojVoice->wBufferSize != buffer.getNumSamples()) mojVoice->wBufferSize = buffer.getNumSamples();
+    
     buffer.clear();
     
     mojSynt.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
@@ -329,7 +331,6 @@ void WojtekSynthAudioProcessor::setPolyphonic(int poly)
         if ((mojVoice = dynamic_cast<WojtekSynthVoice*>(mojSynt.getVoice(i))))
         {
             mojVoice->wojtekSetSampleRate(lastSampleRate);
-            
         }
     }
 

@@ -34,6 +34,8 @@ public:
     }
     
     
+    
+    
     //=== W A V E == O S C I L L A T O R == 1 ===
     void setWaveType1 (float* waveType)
     {
@@ -50,6 +52,7 @@ public:
         if (wVoiceWaveType1 == 3) return (double)wVoiceOsc1Mix*mOsc1.triangle(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
         if (wVoiceWaveType1 == 4) return (double)wVoiceOsc1Mix*mOsc1.phasor(wVoiceFreq * (1+(7*wojtekEnvelope_2)));
         if (wVoiceWaveType1 == 5) return (double)wVoiceOsc1Mix*mOsc1.noise();
+        if (wVoiceWaveType1 == 6) return mOsc1.impulse(wBufferSize);
         
         else return 0.0f;
     }
@@ -70,6 +73,7 @@ public:
         if (wVoiceWaveType2 == 3) return (double)wVoiceOsc2Mix*mOsc2.triangle(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
         if (wVoiceWaveType2 == 4) return (double)wVoiceOsc2Mix*mOsc2.phasor(wVoiceFreq * wOsc2Pitch * (1+(7*wojtekEnvelope_2)));
         if (wVoiceWaveType2 == 5) return (double)wVoiceOsc2Mix*mOsc2.noise();
+        if (wVoiceWaveType2 == 6) return mOsc1.impulse(wBufferSize);
         
         else return 0.0f;
     }
@@ -285,7 +289,8 @@ public:
             z1_left = xn_left;
 
 //            for(int channel = 0; channel<outputBuffer.getNumChannels(); ++channel) {
-                outputBuffer.addSample(0, startSample, yn_left);
+//                outputBuffer.addSample(0, startSample, yn_left);
+                outputBuffer.addSample(0, startSample, wojtekSound);
 //            }
 
             ++startSample;
@@ -309,6 +314,7 @@ public:
     
     //==============================================================================
     
+    int wBufferSize;
 
 private:
     double extSampRat;
