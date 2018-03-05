@@ -25,21 +25,26 @@ WojtekSynthAudioProcessor::WojtekSynthAudioProcessor()
 tree(*this, nullptr)
 #endif
 {
+    std::function<String (float)> valueToTextFunction = {};
+
+    if(!valueToTextFunction)
+        valueToTextFunction = [](float value){ return (String)value; };
+    
     NormalisableRange<float> polyVoicesRange(1.0f, 10.0f, 1.0f);
-    tree.createAndAddParameter("polyvoices", "PolyVoices", "PolyVoices", polyVoicesRange, 1.0f, nullptr, nullptr);
+    tree.createAndAddParameter("polyvoices", "PolyVoices", "PolyVoices", polyVoicesRange, 1.0f, valueToTextFunction, nullptr);
     
     //== O S C I L L A T O R == M I X E R ==
     NormalisableRange<float> oscChoices(0, 6);
-    tree.createAndAddParameter("wavetype1", "WaveType1", "WaveTypes1", oscChoices, 0, nullptr, nullptr);
-    tree.createAndAddParameter("wavetype2", "WaveType2", "WaveTypes2", oscChoices, 1, nullptr, nullptr);
+    tree.createAndAddParameter("wavetype1", "WaveType1", "WaveTypes1", oscChoices, 0, valueToTextFunction, nullptr);
+    tree.createAndAddParameter("wavetype2", "WaveType2", "WaveTypes2", oscChoices, 1, valueToTextFunction, nullptr);
  
     NormalisableRange<float> oscMixRange(-1.0f, 1.0f);
-    tree.createAndAddParameter("oscmix", "OscMix", "OscMix", oscMixRange, 0, nullptr, nullptr);
+    tree.createAndAddParameter("oscmix", "OscMix", "OscMix", oscMixRange, 0, valueToTextFunction, nullptr);
     
     
     //== O S C == 2 == S E M I == P I T C H ==
     NormalisableRange<float> osc2PitchRange(-1.0f, 1.0f);
-    tree.createAndAddParameter("osc2pitch", "Osc2Pitch", "Osc2Pitch", osc2PitchRange, 0.0f, nullptr, nullptr);
+    tree.createAndAddParameter("osc2pitch", "Osc2Pitch", "Osc2Pitch", osc2PitchRange, 0.0f, valueToTextFunction, nullptr);
     
     
     //== V O I C E == E N V E L O P E ==
@@ -54,16 +59,16 @@ tree(*this, nullptr)
     
     
     NormalisableRange<float> attackRange (100.0f, 2000000.0f);
-    tree.createAndAddParameter("attack", "Attack", "AtSpeed", attackRange, 100000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("attack", "Attack", "AtSpeed", attackRange, 100000.0f, valueToTextFunction, nullptr);
     
     NormalisableRange<float> decayRange (100.0f, 2000000.0f);
-    tree.createAndAddParameter("decay", "Decay", "DeSpeed", decayRange, 1000000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("decay", "Decay", "DeSpeed", decayRange, 1000000.0f, valueToTextFunction, nullptr);
 
     NormalisableRange<float> sustainRange (0.00f, 1.0f);
     tree.createAndAddParameter("sustain", "Sustain", "Amplitude", sustainRange, 1.0f, nullptr, nullptr);
 
     NormalisableRange<float> releaseRange (100.0f, 2000000.0f);
-    tree.createAndAddParameter("release", "Release", "ReSpeed", releaseRange, 200000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("release", "Release", "ReSpeed", releaseRange, 200000.0f, valueToTextFunction, nullptr);
     
 
     
@@ -79,40 +84,40 @@ tree(*this, nullptr)
     
     
     NormalisableRange<float> attackRange_2 (10.0f, 2000000.0f);
-    tree.createAndAddParameter("attack_2", "Attack_2", "AtSpeed_2", attackRange_2, 100000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("attack_2", "Attack_2", "AtSpeed_2", attackRange_2, 100000.0f, valueToTextFunction, nullptr);
     
     NormalisableRange<float> decayRange_2 (10.0f, 2000000.0f);
-    tree.createAndAddParameter("decay_2", "Decay_2", "DeSpeed_2", decayRange_2, 1000000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("decay_2", "Decay_2", "DeSpeed_2", decayRange_2, 1000000.0f, valueToTextFunction, nullptr);
     
     NormalisableRange<float> sustainRange_2 (0.00f, 1.0f);
     tree.createAndAddParameter("sustain_2", "Sustain_2", "Amplitude_2", sustainRange_2, 1.0f, nullptr, nullptr);
     
     NormalisableRange<float> releaseRange_2 (10.0f, 2000000.0f);
-    tree.createAndAddParameter("release_2", "Release_2", "ReSpeed_2", releaseRange_2, 200000.0f, nullptr, nullptr);
+    tree.createAndAddParameter("release_2", "Release_2", "ReSpeed_2", releaseRange_2, 200000.0f, valueToTextFunction, nullptr);
     
     NormalisableRange<float> env2AmounRange (0.0f, 1.0f, 0.01f);
-    tree.createAndAddParameter("env2amount", "Env2Amount", "Env2Amount", env2AmounRange, 0.0f, nullptr, nullptr);
+    tree.createAndAddParameter("env2amount", "Env2Amount", "Env2Amount", env2AmounRange, 0.0f, valueToTextFunction, nullptr);
     
     
     
     //== E N V == C H O O S E R ==
     NormalisableRange<float> EnvSwitchRange(0.0f, 1.0f, 1.0f);
-    tree.createAndAddParameter("envswitch", "EnvSwitch", "EnvSwitch", EnvSwitchRange, 1.0f, nullptr, nullptr);
+    tree.createAndAddParameter("envswitch", "EnvSwitch", "EnvSwitch", EnvSwitchRange, 1.0f, valueToTextFunction, nullptr);
     
     
     
     //== G A I N == S L I D E R ==
     NormalisableRange<float> gainRange(-66.0f, 0.0f);
-    tree.createAndAddParameter("gain", "Gain", "Gain", gainRange, -10.0f, nullptr, nullptr);
+    tree.createAndAddParameter("gain", "Gain", "Gain", gainRange, -10.0f, valueToTextFunction, nullptr);
     
     
     
     //== F I L T E R == S L I D E R S ==
     NormalisableRange<float> lowCutRange_a1(-1.0f, 1.0f);
-    tree.createAndAddParameter("lowcut_a1", "LowCut_a1", "LowCut_a1", lowCutRange_a1, 1.0f, nullptr, nullptr);
+    tree.createAndAddParameter("lowcut_a1", "LowCut_a1", "LowCut_a1", lowCutRange_a1, 1.0f, valueToTextFunction, nullptr);
     
     NormalisableRange<float> lowCutRange_a0(-1.0f, 1.0f);
-    tree.createAndAddParameter("lowcut_a0", "LowCut_a0", "LowCut_a0", lowCutRange_a0, 0.0f, nullptr, nullptr);
+    tree.createAndAddParameter("lowcut_a0", "LowCut_a0", "LowCut_a0", lowCutRange_a0, 0.0f, valueToTextFunction, nullptr);
     
 
     
